@@ -1,9 +1,18 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     // socket ouverte vers le serveur
-    let socket = io.connect();
+    let sock = io.connect();
 
-    alert("Yooooo");
+
+
+
+    /******************************************************************
+     *                   Gestion de la socket                         *
+     ******************************************************************/
+
+    sock.on("erreur", function(msg) {
+        alert(msg);
+    });
 
 
 });

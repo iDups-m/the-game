@@ -18,3 +18,30 @@ app.use(express.static('public'));
 app.get('/', function(req, res) {  
     res.sendFile(__dirname + '/public/theGame.html');
 });
+
+
+
+/**********************************************************************
+ ***                      Gestion des websockets                    ***
+ **********************************************************************/
+
+// réception d'une connexion
+io.on('connection', function (socket) {
+
+    // message de debug
+    console.log("Un client s'est connecté");
+
+
+    // essai :
+    socket.emit("erreur", "Server en cours de construction.");
+
+
+    /**
+     *  Gestion des déconnexions
+     */
+    socket.on("disconnect", function() {
+        console.log("Déconnexion d'un client");
+
+    });
+
+});
