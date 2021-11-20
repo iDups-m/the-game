@@ -1,0 +1,15 @@
+{
+  "name": "the_game",
+  "version": "1.0.0",
+  "description": "Projet de Web avancé consistant à coder le jeu de société The Game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dupont_odrion",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.3.1"
+  }
+}
