@@ -50,7 +50,10 @@ table {
 /*********************************
            card stylesheet
  *********************************/
-
+html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
 * {
     box-sizing: border-box;
 }
@@ -101,9 +104,6 @@ input[type="button"] {
     cursor: pointer;
     border-radius: 5px;
 }
-input.discard {
-    background: black;
-}
 .board {
     position: relative;
     background: transparent;
@@ -115,22 +115,16 @@ input.discard {
     position: relative;
     display: inline-block;
     background: transparent;
-    color: #000;
     width: 150px;
     height: 200px;
     margin: 10px;
     cursor: pointer;
 }
-.suit {
-    position: relative;
-    color: #AAA;
-    text-align: left;
-}
 .card .face {
     position: absolute;
     border: 1px solid #333;
     color: white;
-    width: 150px;
+    width: 135px;
     height: 200px;
     line-height: 3em;
     text-align: center;
@@ -138,11 +132,34 @@ input.discard {
     border-radius: 10px;
     box-shadow: 4px 4px 10px #555;
 }
-.card .front {
-    background: black;
-    transform: rotateX(0deg) rotateY(0deg);
-    transition: all .4s ease-in-out;
-    backface-visibility: visible;
+.card .faceCard {
+    position: absolute;
+    border: 1px solid #333;
+    color: white;
+    width: 100px;
+    height: 150px;
+    line-height: 3em;
+    text-align: center;
+    text-transform: capitalize;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px #555;
+}
+.card .base1 {
+    background-image: url("./pictures/increaseCard.jpg");
+    background-repeat: no-repeat;
+    z-index: 10;
+}
+.card .base2 {
+    background-image: url("./pictures/decreaseCard.jpg");
+    background-repeat: no-repeat;
+    z-index: 10;
+}
+.card .stack {
+    background: white;
+    z-index: 10;
+}
+.card .hand {
+    background: white;
     z-index: 10;
 }
 /*.card:nth-child(1) {
@@ -165,87 +182,24 @@ input.discard {
     transform: rotateX(0deg) rotateY(0deg) rotateZ(40deg);
     animation: drop5 .5s ease-in;
 }*/
-@keyframes drop1 {
-    0% {
-        transform: scale(2, 2) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    }
-    50% {
-        transform: rotateX(0deg) rotateY(0deg) rotateZ(-25deg);
-    }
-    100% {
-        transform: scale(.97, .97) rotateX(0deg) rotateY(0deg) rotateZ(-45deg);
-    }
-}
-@keyframes drop2 {
-    0% {
-        transform: scale(2, 2) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    }
-    50% {
-        transform: rotateX(0deg) rotateY(0deg) rotateZ(-10deg);
-    }
-    100% {
-        transform: scale(.97, .97) rotateX(0deg) rotateY(0deg) rotateZ(-20deg);
-    }
-}
-@keyframes drop3 {
-    0% {
-        transform: scale(2, 2) rotateX(0deg) rotateY(0deg) rotateZ(-50deg);
-    }
-    50% {
-        transform: rotateX(0deg) rotateY(50deg) rotateZ(25deg);
-    }
-    100% {
-        transform: scale(.98, .98) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    }
-}
-@keyframes drop4 {
-    0% {
-        transform: scale(2, 2) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    }
-    50% {
-        transform: rotateX(0deg) rotateY(0deg) rotateZ(10deg);
-    }
-    100% {
-        transform: scale(.98, .98) rotateX(0deg) rotateY(0deg) rotateZ(20deg);
-    }
-}
-@keyframes drop5 {
-    0% {
-        transform: scale(2, 2) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    }
-    50% {
-        transform: rotateX(0deg) rotateY(50deg) rotateZ(-10deg);
-    }
-    100% {
-        transform: scale(.98, .98) rotateX(0deg) rotateY(0deg) rotateZ(40deg);
-    }
-}
-.card .back {
-    background: red;
-    transform: rotateX(0deg) rotateY(180deg);
-    transform-style: preserve-3d;
-    transition: all .4s ease-in-out;
-    backface-visibility: hidden;
-    z-index: 5;
-}
-.card.flip .front {
+/*.card.flip .front {
     transform: rotateY(180deg);
     transform-style: preserve-3d;
     transition: all .4s ease-in-out;
     backface-visibility: hidden;
     z-index: 900;
-}
-.card.flip .back {
-    transform: rotateY(0deg);
-    transform-style: preserve-3d;
-    transition: all .4s ease-in-out;
-    backface-visibility: visible;
-    z-index: 1000;
-}
-.center-screen {
+}*/
+.board-position {
     position: absolute;
-    top: 30%;
-    left: 40%;
+    top: 10%;
+    left: 30%;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+.hand-position {
+    position: absolute;
+    top: 90%;
+    left: 15%;
     margin-top: -50px;
     margin-left: -50px;
 }

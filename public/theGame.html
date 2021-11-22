@@ -8,24 +8,30 @@
     <script src="./theGame.js"></script>
 </head>
 <main>
-    <div class="board center-screen" id="board">
-            <span class="card card1">
-                <div class="face front"></div>
-                <div class="face back"></div>
-            </span>
-        <span class="card card2">
-                <div class="face front"></div>
-                <div class="face back"></div>
-            </span>
-        <br>
-        <span class="card card3">
-                <div class="face front"></div>
-                <div class="face back"></div>
-            </span>
-        <span class="card card4">
-                <div class="face front"></div>
-                <div class="face back"></div>
-            </span>
+    <div class="board board-position" id="board">
+        <section id="base">
+            <span class="card"><div class="face base1"></div></span>
+            <span class="card"><div class="face base1"></div></span>
+            <span class="card"><div class="face base2"></div></span>
+            <span class="card"><div class="face base2"></div></span>
+        </section>
+        <section id="stack">
+            <span class="card"><div class="face stack"></div></span>
+            <span class="card"><div class="face stack"></div></span>
+            <span class="card"><div class="face stack"></div></span>
+            <span class="card"><div class="face stack"></div></span>
+        </section>
+    </div>
+    <div class="board hand-position" id="hand">
+        <section>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+        </section>
     </div>
 </main>
 </html>

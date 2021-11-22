@@ -7,29 +7,25 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 server.listen(8080, function() {
-    console.log("C'est parti ! En attente de connexion sur le port 8080...");
+    console.log("connected");
 });
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res) {  
+app.get('/', function(req, res) {
     res.sendFile(__dirname + '/public/theGame.html');
 });
 
+/***************************************************************
+ handle client and the game
+ ***************************************************************/
+
+
+
 /**********************************************************************
- ***                      Gestion des websockets                    ***
+ ***                              websocket                         ***
  **********************************************************************/
 
-// connection received
 io.on('connection', function (socket) {
-
-    // debug message
-    console.log("player connected");
-
-    /**
-     *  log out handler
-     */
-    socket.on("disconnect", function() {
-        console.log("player logged out");
-    });
+    console.log("One player connected");
 });
