@@ -1,10 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -162,26 +157,6 @@ input[type="button"] {
     background: white;
     z-index: 10;
 }
-/*.card:nth-child(1) {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(-45deg);
-    animation: drop1 .5s ease-in;
-}
-.card:nth-child(2) {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(-20deg);
-    animation: drop2 .5s ease-in;
-}
-.card:nth-child(3) {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-    animation: drop3 .5s ease-in;
-}
-.card:nth-child(4) {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(20deg);
-    animation: drop4 .5s ease-in;
-}
-.card:nth-child(5) {
-    transform: rotateX(0deg) rotateY(0deg) rotateZ(40deg);
-    animation: drop5 .5s ease-in;
-}*/
 /*.card.flip .front {
     transform: rotateY(180deg);
     transform-style: preserve-3d;
@@ -198,8 +173,41 @@ input[type="button"] {
 }
 .hand-position {
     position: absolute;
-    top: 90%;
-    left: 15%;
+    top: 92%;
+    left: 36%;
     margin-top: -50px;
     margin-left: -50px;
+}
+#hand > span {
+    margin-right: -100px;
+}
+#hand > span:nth-child(1) {
+    padding-top: 17px;
+    transform: rotateZ(-20deg);
+    animation: drop1 .5s ease-in;
+}
+#hand > span:nth-child(2) {
+    padding: 5px;
+    transform: rotateZ(-10deg);
+    animation: drop2 .5s ease-in;
+}
+#hand > span:nth-child(3) {
+    transform: rotateZ(-5deg);
+    animation: drop3 .5s ease-in;
+}
+#hand > span:nth-child(4) {
+    transform: rotateZ(0deg);
+    animation: drop4 .5s ease-in;
+}
+#hand > span:nth-child(5) {
+    transform: rotateZ(5deg);
+    animation: drop5 .5s ease-in;
+}
+#hand > span:nth-child(6) {
+    transform: rotateZ(10deg);
+    animation: drop6 .5s ease-in;
+}
+#hand > span:nth-child(7) {
+    transform: rotateZ(15deg);
+    animation: drop7 .5s ease-in;
 }
