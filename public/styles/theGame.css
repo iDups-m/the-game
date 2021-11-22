@@ -129,12 +129,12 @@ blockquote:before, blockquote:after {
     box-shadow: 4px 4px 10px #555;
 }
 .card .base1 {
-    background-image: url("./pictures/increaseCard.jpg");
+    background-image: url("../pictures/increaseCard.jpg");
     background-repeat: no-repeat;
     z-index: 10;
 }
 .card .base2 {
-    background-image: url("./pictures/decreaseCard.jpg");
+    background-image: url("../pictures/decreaseCard.jpg");
     background-repeat: no-repeat;
     z-index: 10;
 }
@@ -147,7 +147,7 @@ blockquote:before, blockquote:after {
     z-index: 10;
 }
 .card .pick {
-    background-image: url("./pictures/pick.jpg");
+    background-image: url("../pictures/pick.jpg");
     z-index: 10;
 }
 /*.card.flip .front {
@@ -184,7 +184,7 @@ blockquote:before, blockquote:after {
     margin-left: 40px;
     width: 390px;
     height: 1080px;
- }
+}
 
 #pick > span {
     margin-right: -160px;

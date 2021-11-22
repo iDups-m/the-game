@@ -13,7 +13,7 @@ server.listen(8080, function() {
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/public/theGame.html');
+    res.sendFile(__dirname + '/public/html/theGame.html');
 });
 
 /***************************************************************
@@ -26,6 +26,18 @@ app.get('/', function(req, res) {
  ***                              websocket                         ***
  **********************************************************************/
 
+// connection received
 io.on('connection', function (socket) {
-    console.log("One player connected");
+
+    // debug message
+    console.log("player connected");
+
+    socket.emit("erreur", "player connected")
+
+    /**
+     *  log out handler
+     */
+    socket.on("disconnect", function() {
+        console.log("player logged out");
+    });
 });
