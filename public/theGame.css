@@ -146,6 +146,10 @@ blockquote:before, blockquote:after {
     background: white;
     z-index: 10;
 }
+.card .pick {
+    background-image: url("./pictures/pick.jpg");
+    z-index: 10;
+}
 /*.card.flip .front {
     transform: rotateY(180deg);
     transform-style: preserve-3d;
@@ -153,6 +157,13 @@ blockquote:before, blockquote:after {
     backface-visibility: hidden;
     z-index: 900;
 }*/
+.pick-position {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    margin-top: -50px;
+    margin-left: -50px;
+}
 .board-position {
     position: absolute;
     top: 10%;
@@ -166,6 +177,9 @@ blockquote:before, blockquote:after {
     left: 36%;
     margin-top: -50px;
     margin-left: -50px;
+}
+#pick > span {
+    margin-right: -160px;
 }
 #hand > span {
     margin-right: -100px;
