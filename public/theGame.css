@@ -48,6 +48,7 @@ table {
 html {
     overflow-x: hidden;
     overflow-y: hidden;
+    background: lightgray;
 }
 * {
     box-sizing: border-box;
@@ -86,18 +87,6 @@ blockquote {
 }
 blockquote:before, blockquote:after {
     content: '"';
-}
-input[type="button"] {
-    background: blue;
-    border: none;
-    color: white;
-    text-transform: uppercase;
-    width: 100px;
-    height: 45px;
-    padding: 5px;
-    outline: 0;
-    cursor: pointer;
-    border-radius: 5px;
 }
 .board {
     position: relative;

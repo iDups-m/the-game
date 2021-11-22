@@ -1,14 +1,20 @@
-document.addEventListener("DOMContentLoaded", function() {
+/**********************************************************************
+ ***                  useful functions of the game                  ***
+ **********************************************************************/
 
+function createCard(faceClass, specClass) {
+    let span = document.createElement("SPAN");
+    span.classList.add("card");
+    let div = document.createElement("DIV");
+    div.classList.add(faceClass, specClass);
+    span.appendChild(div);
+    return span;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
     let sock = io.connect();
 
-    /******************************************************************
-     *                   Gestion de la socket                         *
-     ******************************************************************/
-
-    sock.on("erreur", function(msg) {
-        alert(msg);
-    });
+    document.getElementById("base")
 
     /*document.getElementById("board").addEventListener("click", function (e) {
         let card = e.target.parentNode;
