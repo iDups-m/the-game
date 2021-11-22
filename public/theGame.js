@@ -1,10 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
 
-    // socket ouverte vers le serveur
     let sock = io.connect();
-
-
-
 
     /******************************************************************
      *                   Gestion de la socket                         *
@@ -14,5 +10,10 @@ document.addEventListener("DOMContentLoaded", function() {
         alert(msg);
     });
 
-
+    document.getElementById("board").addEventListener("click", function (e) {
+        let card = e.target.parentNode;
+        if (e.target.tagName === "DIV" && card.tagName === "SPAN") {
+            card.classList.toggle("flip");
+        }
+    });
 });
