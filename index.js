@@ -13,7 +13,7 @@ server.listen(8080, function() {
 app.use(express.static('public'));
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/public/html/theGame.html');
+    res.sendFile(__dirname + '/public/theGame.html');
 });
 
 /***************************************************************

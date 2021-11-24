@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Game</title>
+    <link type="text/css" rel="stylesheet" href="styles/theGame.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="theGame.js"></script>
+</head>
+<body>
+    <img id="background" src="./pictures/wood.jpg" alt="background wood" />
+
+<main>
+
+    <div id="welcome">
+        <div>
+            <h1 id="h1_welcome">Bienvenue dans THE GAME</h1>
+            <p>En attente de joueurs...</p>
+            <img id="load" src="./pictures/load.gif" alt="load" />
+        </div>
+        <div>
+            <button id="btnStart">Lancer la partie !</button>
+        </div>
+    </div>
+
+
+    <div id="game">
+        <div class="board pick-position" id="pick">
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+            <span class="card"><div class="face pick"></div></span>
+        </div>
+        <div class="board board-position" id="board">
+            <section id="base">
+                <span class="card"><div class="face base1"></div></span>
+                <span class="card"><div class="face base1"></div></span>
+                <span class="card"><div class="face base2"></div></span>
+                <span class="card"><div class="face base2"></div></span>
+            </section>
+            <section id="stack">
+                <span class="card"><div class="face stack"></div></span>
+                <span class="card"><div class="face stack"></div></span>
+                <span class="card"><div class="face stack"></div></span>
+                <span class="card"><div class="face stack"></div></span>
+            </section>
+        </div>
+        <div class="board hand-position" id="hand">
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+            <span class="card"><div class="faceCard hand"></div></span>
+        </div>
+        <div class="chat-position" id="chat">
+        </div>
+    </div>
+
+</main>
+
+
+</body>
+
+</html>

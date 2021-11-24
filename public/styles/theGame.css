@@ -43,8 +43,59 @@ table {
 }
 
 /*********************************
+           welcome stylesheet
+ *********************************/
+
+#background { /* wood picture on welcome page */
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+}
+
+#welcome {
+    text-align: center;
+    margin-top: 50vh; /* poussé de la moitié de hauteur de viewport */
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+#h1_welcome {
+    font-family: Trattatello, sans-serif;
+    font-size: 40px;
+    color: white;
+    text-shadow: 1px 1px 10px black;
+}
+
+#load {
+    margin-top: 40px;
+    width: 50px;
+    height: 50px;
+}
+
+#btnStart {
+    margin-top: 40px;
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    border-radius: 10px;
+    border: 4px double;
+    transition: all 0.5s;
+}
+#btnStart:hover {
+    background-color: red;
+}
+
+/*********************************
            card stylesheet
  *********************************/
+/*
+#game {
+    display: none;
+}
+*/
+
 html {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -157,6 +208,7 @@ blockquote:before, blockquote:after {
     backface-visibility: hidden;
     z-index: 900;
 }*/
+
 .pick-position {
     position: absolute;
     top: 20%;
