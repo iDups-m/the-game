@@ -5,7 +5,10 @@
     <title>The Game</title>
     <link type="text/css" rel="stylesheet" href="styles/theGame.css">
     <script src="/socket.io/socket.io.js"></script>
-    <script src="theGame.js"></script>
+    <script src="js/theGame.js"></script>
+    <script src="js/refreshDOM.js"></script>
+    <script src="js/functions.js"></script>
+    <script src="js/listenSocket.js"></script>
 </head>
 <body>
     <img id="background" src="./pictures/wood.jpg" alt="background wood" />
@@ -14,12 +17,17 @@
 
     <div id="welcome">
         <div>
-            <h1 id="h1_welcome">Bienvenue dans THE GAME</h1>
-            <p>En attente de joueurs...</p>
+            <h1 id="h1_welcome">Welcome in THE GAME</h1>
+            <p id="p_welcome">Waiting players...</p>
             <img id="load" src="./pictures/load.gif" alt="load" />
         </div>
-        <div>
-            <button id="btnStart">Lancer la partie !</button>
+        <section id="sectionPlayers">
+            <table id="tblPlayers">
+            </table>
+        </section>
+        <div id="btn">
+            <button id="btnConnect">Log in</button>
+            <button id="btnStart">Ready to play</button>
         </div>
     </div>
 

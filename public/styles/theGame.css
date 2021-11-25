@@ -43,7 +43,7 @@ table {
 }
 
 /*********************************
-           welcome stylesheet
+        welcome stylesheet
  *********************************/
 
 #background { /* wood picture on welcome page */
@@ -68,33 +68,93 @@ table {
     text-shadow: 1px 1px 10px black;
 }
 
+#p_welcome {
+    font-size: 20px;
+}
+
 #load {
     margin-top: 40px;
     width: 50px;
     height: 50px;
 }
 
-#btnStart {
+#btnStart, #btnConnect {
     margin-top: 40px;
+    margin-right: 10px;
     background-color: black;
     color: white;
-    font-size: 30px;
+    font-size: 25px;
     border-radius: 10px;
     border: 4px double;
     transition: all 0.5s;
 }
-#btnStart:hover {
+#btnStart:hover, #btnConnect:hover {
     background-color: red;
 }
+
+#btnStart {
+    display: none;
+}
+
+/***************************************************
+			Section for table of players
+****************************************************/
+
+#sectionPlayers {
+    display: none;
+}
+
+section {
+    position: relative;
+    border: solid 1px white;
+    width: 90%;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px white;
+}
+
+section header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/*input[type="text"] {
+    width: 300px;
+}*/
+/*input[type="number"] {
+    width: 80px;
+}*/
+/*label {
+    margin: 0 10px;
+}*/
+
+th, td {
+    padding: 3px 5px;
+}
+
+#tblPlayers {
+    width: 90%;
+    margin: 10px auto;
+}
+#tblPlayers th {
+    font-weight: bold;
+}
+#tblPlayers td:not(:first-child) {
+    text-align: center;
+}
+#tblPlayers td {
+    border: solid 1px white;
+}
+
+
 
 /*********************************
            card stylesheet
  *********************************/
-/*
 #game {
     display: none;
 }
-*/
 
 html {
     overflow-x: hidden;
