@@ -55,31 +55,35 @@ table {
     z-index: -1;
 }
 
-#welcome {
-    text-align: center;
-    margin-top: 50vh; /* poussé de la moitié de hauteur de viewport */
-    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
-}
-
 #h1_welcome {
+    text-align: center;
+    margin-top: 70px;
     font-family: Trattatello, sans-serif;
     font-size: 40px;
     color: white;
     text-shadow: 1px 1px 10px black;
 }
 
-#p_welcome {
-    font-size: 20px;
+#welcome {
+    text-align: center;
+    margin-top: 50vh; /* poussé de la moitié de hauteur de viewport */
+    transform: translateY(-50%); /* tiré de la moitié de sa propre hauteur */
+}
+
+#p_welcome, #p_how_many, #p_waiting {
+    font-size: 25px;
+    padding-bottom: 10px;
+    margin-bottom: 40px;
 }
 
 #load {
-    margin-top: 40px;
+    text-align: center;
+    margin-bottom: 20px;
     width: 50px;
     height: 50px;
 }
 
-#btnStart, #btnConnect {
-    margin-top: 40px;
+button {
     margin-right: 10px;
     background-color: black;
     color: white;
@@ -88,23 +92,19 @@ table {
     border: 4px double;
     transition: all 0.5s;
 }
-#btnStart:hover, #btnConnect:hover {
+button:hover {
     background-color: red;
 }
 
-#btnStart {
+#btnStart, #p_waiting, #load {
     display: none;
 }
 
 /***************************************************
-			Section for table of players
+			Section for welcome players
 ****************************************************/
 
 #sectionPlayers {
-    display: none;
-}
-
-section {
     position: relative;
     border: solid 1px white;
     width: 90%;
@@ -112,26 +112,32 @@ section {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 10px 10px 10px white;
+
+    display: none;
 }
 
-section header {
+/*section header {
     text-align: center;
     margin-bottom: 20px;
+}*/
+
+#radios {
+    font-size: 20px;
+    display: none;
 }
 
-/*input[type="text"] {
-    width: 300px;
-}*/
-/*input[type="number"] {
-    width: 80px;
-}*/
-/*label {
-    margin: 0 10px;
-}*/
+#btnJoin, #btnCreate {
+    margin-left: 30px;
+}
 
 th, td {
     padding: 3px 5px;
 }
+
+#p_co {
+    font-size: 18px;
+}
+
 
 #tblPlayers {
     width: 90%;

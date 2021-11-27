@@ -20,8 +20,17 @@ app.get('/', function(req, res) {
                 handle client and the game
  ***************************************************************/
 
-// Players connected
-let players = {};
+// Every games and players in rooms
+let games = {
+    2 : {},
+    3 : {},
+    4 : {},
+};
+let nbRoom = {
+    2 : 0,
+    3 : 0,
+    4 : 0,
+};
 
 
 /**********************************************************************
@@ -34,40 +43,50 @@ io.on('connection', function(socket) {
     // debug message
     console.log("player connected");
 
-    let index = -1; // -1 : waiting for connection, 0 : connected, 1 : ready to play
+    let index = 0; // 0 : not connected, 1 : connected
 
     /**
      *  Ask for a connection of the player.
-     *  @param  name    the name of the player
+     *  @param name    the name of the player
+     *  @param nbPlayers number of players in the room
      */
-    socket.on("log_in", function(name) {
-
-        console.log(players[name]);
+    socket.on("join_room", function(name, nbPlayers) {
 
         // if player is already playing
-        if(index !== -1) {
-            socket.emit("erreur", "Joueur already connected.");
+        if(index === 1) {
+            socket.emit("error", "Joueur already connected.");
             return;
         }
 
-        // verify that the name is not already used
-        if( (players[name] === 0 ) || (players[name] === 1 )){
-            console.log("BUG");
+        // verify that the name is not already used in the room
+        /*if( (players[name] === 0 ) || (players[name] === 1 )){
             socket.emit("error", "A player with this name is already connected.");
             return;
         }
 
-        socket.emit("error", "Just a try");
-
         index = 0;
-        players[name] = index;
+        players[name] = index;*/
 
-        // message de debug
-        console.log("Name received : ", name);
-
-        socket.emit("players", players);
-
+        // For the moment :
+        //socket.emit("players", players);
+        socket.emit("error", "Join bien reçu");
     });
+
+
+    socket.on("create_room", function (name, nbPlayers){
+        socket.emit("error", "Create bien reçu");
+
+        let index = nbRoom[nbPlayers];
+        games[nbPlayers][index] = {};
+        games[nbPlayers][index]["name"] = name;
+        games[nbPlayers][index]["socket"] = socket;
+        nbRoom[nbPlayers]++;
+
+        let players = [];
+        players.push(games[nbPlayers][index]["name"]);
+        socket.emit("players", players);
+    });
+
 
     /**
      *  log out handler

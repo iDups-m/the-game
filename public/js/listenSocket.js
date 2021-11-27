@@ -4,6 +4,8 @@
 
 document.addEventListener("DOMContentLoaded", function() {
 
+    //TODO : don't work !!
+
     // socket open to the server
     var sock = io.connect();
 

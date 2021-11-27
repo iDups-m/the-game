@@ -11,42 +11,48 @@ document.addEventListener("DOMContentLoaded", function() {
         alert(msg);
     });
 
-    /** To connect */
-    let btnConnect = document.getElementById("btnConnect");
-    btnConnect.addEventListener("click", function (e) {
-        let name = prompt("Votre pseudo :");
-        while (name.length === 0){
-            name = prompt("Pseudo invalide. Votre pseudo :");
-            //TODO : faire d'autres vérifications sur le nom :
-            // - Ne contient pas juste une chaine vide (ex: " ", "\t"...)
-            // - Ne contient pas d'éléments html
-            // -> Utiliser le TP1 je pense
-        }
-
-
-        /*Update players in the DOM*/
-        let tblPlayers = document.getElementById("tblPlayers");
-
-        if(tblPlayers.children.length === 0){
-            let sectionPlayers = document.getElementById("sectionPlayers");
-            sectionPlayers.style.display = "block";
-            prepareTablePlayersDom();
-        }
-
-        addPlayer(name);
-
-        /*Hide button "log in" and display "ready to play" one*/
-        replaceBtnConnectionPlay();
-
-        sock.emit("log_in", name);
-
+    sock.on("players", function(players) {
+        console.log(players);
+        refreshTablePlayers(players);
     });
 
-    /** Start the game */
-    let btnStart = document.getElementById("btnStart");
-    btnStart.addEventListener("click", function (e) {
-        remove_welcome();
-        print_board();
+    sock.on("debug", function(games) {
+        console.log(games);
     });
+
+
+    /** Join a room */
+    let btnJoinRoom = document.getElementById("btnJoinRoom");
+    btnJoinRoom.addEventListener("click", function (e) {
+        hide_DOM("p_welcome");
+        hide_DOM("btn");
+        display_DOM("radios");
+        hide_DOM("btnCreate");
+    });
+
+    /** Create a room */
+    let btnCreateRoom = document.getElementById("btnCreateRoom");
+    btnCreateRoom.addEventListener("click", function (e) {
+        hide_DOM("p_welcome");
+        hide_DOM("btn");
+        display_DOM("radios");
+        hide_DOM("btnJoin");
+    });
+
+
+    /** To join the room */
+    let btnJoin = document.getElementById("btnJoin");
+    btnJoin.addEventListener("click", function (e) {
+        sendPlayerServer(sock, "join_room");
+    });
+
+    /** To join the room created */
+    let btnCreate = document.getElementById("btnCreate");
+    btnCreate.addEventListener("click", function (e) {
+        sendPlayerServer(sock, "create_room");
+    });
+
+
+
 
 });

@@ -1,42 +1,33 @@
 "use strict";
 
 /**********************************************************************
- ***                  useful functions for the display             ***
+ ***              functions for the display of the DOM              ***
  **********************************************************************/
 
 /**
- * Functions that transforme a welcome display to a game display
+ * Functions that display or hide a section
  */
-function remove_welcome(){
-    let div = document.getElementById("welcome");
-    div.style.display = "none";
+function display_DOM(id_of_element, display = "block"){
+    let element = document.getElementById(id_of_element);
+    element.style.display = display;
 }
-function print_board(){
-    let div = document.getElementById("game");
-    div.style.display = "block";
-}
-function replaceBtnConnectionPlay(){
-    let btnConnect = document.getElementById("btnConnect");
-    btnConnect.style.display = "none";
-    let btnStart = document.getElementById("btnStart");
-    btnStart.style.display = "inline";
+function hide_DOM(id_of_element){
+    let element = document.getElementById(id_of_element);
+    element.style.display = "none";
 }
 
-/*
-* Fonction qui crer les différentes sections de la table de dépense.
-* Elle est appellée uniquement lors de l'ajout de la première dépense.
-* Argument : la liste d'amis du remboursement.
-* Ne renvoie rien.
+
+/**
+* Fonction that create differents section of the table of players.
 */
-function prepareTablePlayersDom(player){
+function prepareTablePlayersDom(){
+    let sectionPlayers = document.getElementById("sectionPlayers");
+    sectionPlayers.style.display = "block";
+
     let thead = document.createElement("thead");
     let tr = document.createElement("tr");
     let thPlayer = document.createElement("th");
     thPlayer.textContent = "Player";
-    let thState = document.createElement("th");
-    thState.textContent = "State";
-    tr.appendChild(thPlayer);
-    tr.appendChild(thState);
 
     thead.appendChild(tr);
     document.getElementById("tblPlayers").appendChild(thead);
@@ -46,22 +37,35 @@ function prepareTablePlayersDom(player){
 }
 
 
-/*
-* Fonction qui ajoute une dépense dans la table des dépenses du DOM.
-* Arguments : le libelle, le montant, le payeur de la dépense ainsi que la liste des amis et des depenses.
-* Ne renvoie rien.
+/**
+* Fonction that add a player and his state in the table of players.
+* @param name the name of the player
 */
 function addPlayer(name){
     let tr = document.createElement("tr");
     let tdName = document.createElement("td");
     tdName.textContent = name;
     tr.appendChild(tdName);
-    let tdState = document.createElement("td");
-    tdState.textContent = "Waiting...";
-    tr.appendChild(tdState);
     document.querySelector("tbody").appendChild(tr);
 }
 
 function toggleStatePlayers(name){
 
+}
+
+/**
+ * Function that refresh the table of players. Called the server return new players
+ * @param players array of name of players
+ */
+function refreshTablePlayers(players){
+    document.getElementById("tblPlayers").textContent = ''; //to remove every children
+    prepareTablePlayersDom();
+    if(!Array.isArray(players)){
+        addPlayer(players);
+        return;
+    }
+
+    for (const player in players) {
+        addPlayer(player);
+    }
 }
