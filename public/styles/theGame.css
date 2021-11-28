@@ -291,7 +291,7 @@ blockquote:before, blockquote:after {
 }
 .hand-position {
     position: absolute;
-    top: 92%;
+    top: 89%;
     left: 36%;
     margin-top: -50px;
     margin-left: -50px;
@@ -311,12 +311,12 @@ blockquote:before, blockquote:after {
     margin-right: -100px;
 }
 #hand > span:nth-child(1) {
-    padding-top: 17px;
+    padding-top: 20px;
     transform: rotateZ(-20deg);
     animation: drop1 .5s ease-in;
 }
 #hand > span:nth-child(2) {
-    padding: 5px;
+    padding-top: 5px;
     transform: rotateZ(-10deg);
     animation: drop2 .5s ease-in;
 }

@@ -1,11 +1,9 @@
 "use strict";
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
 
     // socket open to the server
-    var sock = io.connect();
+    let sock = io.connect();
 
     sock.on("error", function(msg) {
         alert(msg);
