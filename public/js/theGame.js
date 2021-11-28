@@ -55,4 +55,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+    /** Afficher la partie : TEMPORAIRE */
+    let btnPlay = document.getElementById("btnPlay");
+    btnPlay.addEventListener("click", function (e) {
+        hide_DOM("p_welcome");
+        hide_DOM("btn");
+        hide_DOM("btnCreate");
+        display_DOM("game");
+    });
+
+
+
 });
