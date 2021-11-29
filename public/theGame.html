@@ -10,86 +10,81 @@
     <script src="js/functions.js"></script>
     <script src="js/listenSocket.js"></script>
 </head>
-<body>
-    <img id="background" src="./pictures/wood.jpg" alt="background wood" />
+    <body>
+        <main>
+            <h1 id="h1_welcome">Welcome in THE GAME</h1>
+            <div id="welcome">
 
-<main>
+                <p id="p_welcome">What would you like to do ?</p>
+                <p id="p_waiting">Waiting other players to complete the room...</p>
+                <img id="load" src="./pictures/load.gif" alt="load" />
 
-    <h1 id="h1_welcome">Welcome in THE GAME</h1>
-    <div id="welcome">
+                <section id="sectionPlayers">
+                    <p id="p_co">Conneted players ready to play :</p>
+                    <table id="tblPlayers">
+                    </table>
+                </section>
 
-        <p id="p_welcome">What would you like to do ?</p>
-        <p id="p_waiting">Waiting other players to complete the room...</p>
-        <img id="load" src="./pictures/load.gif" alt="load" />
+                <div id="btn">
+                    <button id="btnJoinRoom">Join a room</button>
+                    <button id="btnCreateRoom">Create a room</button>
+                    <button id="btnPlay">Play</button>
+                </div>
 
-        <section id="sectionPlayers">
-            <p id="p_co">Conneted players ready to play :</p>
-            <table id="tblPlayers">
-            </table>
-        </section>
+                <section id="radios">
+                    <p id="p_how_many">With how many players ?</p>
+                    <input type="radio" id="case2" name="nbJoueurs" value="2" checked>
+                    <label for="case2">2</label>
+                    <input type="radio" id="case3" name="nbJoueurs" value="3">
+                    <label for="case3">3</label>
+                    <input type="radio" id="case4" name="nbJoueurs" value="4">
+                    <label for="case4">4</label>
+                    <button id="btnJoin">Join</button>
+                    <button id="btnCreate">Create</button>
+                </section>
 
-        <div id="btn">
-            <button id="btnJoinRoom">Join a room</button>
-            <button id="btnCreateRoom">Create a room</button>
-            <button id="btnPlay">Play</button>
-        </div>
+            </div>
 
-        <section id="radios">
-            <p id="p_how_many">With how many players ?</p>
-            <input type="radio" id="case2" name="nbJoueurs" value="2" checked>
-            <label for="case2">2</label>
-            <input type="radio" id="case3" name="nbJoueurs" value="3">
-            <label for="case3">3</label>
-            <input type="radio" id="case4" name="nbJoueurs" value="4">
-            <label for="case4">4</label>
-            <button id="btnJoin">Join</button>
-            <button id="btnCreate">Create</button>
-        </section>
+            <div id="game">
+                <div class="board pick-position" id="pick">
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                    <span class="card"><div class="face pick"></div></span>
+                </div>
+                <div class="board board-position" id="board">
+                    <section id="base">
+                        <span class="card"><div class="face base1"></div></span>
+                        <span class="card"><div class="face base1"></div></span>
+                        <span class="card"><div class="face base2"></div></span>
+                        <span class="card"><div class="face base2"></div></span>
+                    </section>
+                    <section id="stack">
+                        <span class="card"><div class="face stack"></div></span>
+                        <span class="card"><div class="face stack"></div></span>
+                        <span class="card"><div class="face stack"></div></span>
+                        <span class="card"><div class="face stack"></div></span>
+                    </section>
+                </div>
+                <div class="board hand-position" id="hand">
+                    <span class="card"><div class="faceCard hand"></div></span>
+                    <span class="card"><div class="faceCard hand"></div></span>
+                    <span class="card"><div class="faceCard hand"></div></span>
+                    <span class="card"><div class="faceCard hand"></div></span>
+                    <span class="card"><div class="faceCard hand"></div></span>
+                    <span class="card"><div class="faceCard hand"></div></span>
+                    <span class="card"><div class="faceCard hand"></div></span>
+                </div>
+                <div class="chat-position" id="chat">
+                </div>
+            </div>
 
-    </div>
-
-    <div id="game">
-        <div class="board pick-position" id="pick">
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-            <span class="card"><div class="face pick"></div></span>
-        </div>
-        <div class="board board-position" id="board">
-            <section id="base">
-                <span class="card"><div class="face base1"></div></span>
-                <span class="card"><div class="face base1"></div></span>
-                <span class="card"><div class="face base2"></div></span>
-                <span class="card"><div class="face base2"></div></span>
-            </section>
-            <section id="stack">
-                <span class="card"><div class="face stack"></div></span>
-                <span class="card"><div class="face stack"></div></span>
-                <span class="card"><div class="face stack"></div></span>
-                <span class="card"><div class="face stack"></div></span>
-            </section>
-        </div>
-        <div class="board hand-position" id="hand">
-            <span class="card"><div class="faceCard hand"></div></span>
-            <span class="card"><div class="faceCard hand"></div></span>
-            <span class="card"><div class="faceCard hand"></div></span>
-            <span class="card"><div class="faceCard hand"></div></span>
-            <span class="card"><div class="faceCard hand"></div></span>
-            <span class="card"><div class="faceCard hand"></div></span>
-            <span class="card"><div class="faceCard hand"></div></span>
-        </div>
-        <div class="chat-position" id="chat">
-        </div>
-    </div>
-
-</main>
-
-</body>
-
+        </main>
+    </body>
 </html>

@@ -56,9 +56,8 @@ document.addEventListener("DOMContentLoaded", function() {
     /** Afficher la partie : TEMPORAIRE */
     let btnPlay = document.getElementById("btnPlay");
     btnPlay.addEventListener("click", function (e) {
-        hide_DOM("p_welcome");
-        hide_DOM("btn");
-        hide_DOM("btnCreate");
+        hide_DOM("h1_welcome");
+        hide_DOM("welcome");
         display_DOM("game");
     });
 
