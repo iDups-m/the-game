@@ -1,5 +1,17 @@
 "use strict";
 
+/*
+ * Useful functions
+ */
+function randomCard() {
+    let value = Math.floor(Math.random() * (98 - 2 + 1) + 2);
+    return value.toString();
+}
+
+/*
+ * ---------------------------------------------------------------------
+ */
+
 document.addEventListener("DOMContentLoaded", function() {
 
     // socket open to the server
@@ -58,8 +70,16 @@ document.addEventListener("DOMContentLoaded", function() {
         display_DOM("game");
     });
 
+    /** flip the card on the top of the pick */
+    let res = false;
     let pick = document.getElementById("pick").lastElementChild;
     pick.addEventListener("click", function(e) {
-        e.target.parentNode.classList.toggle("flip");
+        if (!res) {
+            let card = "10";
+            e.target.style.backgroundSize = "135px 198px";
+            e.target.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
+            e.target.parentNode.classList.add("flip");
+        }
+        res = true;
     });
 });
