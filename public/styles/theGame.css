@@ -262,18 +262,36 @@ blockquote:before, blockquote:after {
     background: white;
     z-index: 10;
 }
-.card .pick {
+.card .pickFront {
     background-image: url("../pictures/pick.jpg");
+    transform: rotateX(0deg) rotateY(0deg);
+    transition: all .4s ease-in-out;
+    backface-visibility: visible;
     z-index: 10;
 }
-/*.card.flip .front {
+.card .pickBack {
+    background-image: url("../pictures/cards/10.jpg");
+    background-size: cover;
+    transform: rotateX(0deg) rotateY(180deg);
+    transform-style: preserve-3d;
+    transition: all .4s ease-in-out;
+    backface-visibility: hidden;
+    z-index: 5;
+}
+.card.flip .pickFront {
     transform: rotateY(180deg);
     transform-style: preserve-3d;
     transition: all .4s ease-in-out;
     backface-visibility: hidden;
     z-index: 900;
-}*/
-
+}
+.card.flip .pickBack {
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+    transition: all .4s ease-in-out;
+    backface-visibility: visible;
+    z-index: 1000;
+}
 .pick-position {
     position: absolute;
     top: 20%;

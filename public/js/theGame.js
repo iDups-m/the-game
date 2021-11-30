@@ -50,9 +50,6 @@ document.addEventListener("DOMContentLoaded", function() {
         sendPlayerServer(sock, "create_room");
     });
 
-
-
-
     /** Afficher la partie : TEMPORAIRE */
     let btnPlay = document.getElementById("btnPlay");
     btnPlay.addEventListener("click", function (e) {
@@ -61,6 +58,8 @@ document.addEventListener("DOMContentLoaded", function() {
         display_DOM("game");
     });
 
-
-
+    let pick = document.getElementById("pick").lastElementChild;
+    pick.addEventListener("click", function(e) {
+        e.target.parentNode.classList.toggle("flip");
+    });
 });
