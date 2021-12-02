@@ -50,7 +50,7 @@ function randomCard() {
  **********************************************************************/
 
 function sendPlayerServer(sock, type_emit){
-    var regex = /[a-zA-Z]+/;
+    var regex = /[a-zA-Z0-9._ -]+/;
     let name = prompt("Votre pseudo :");
     while ((name.trim().length === 0) || (name.match(regex) === null) || name.match(regex)[0] !== name){
         name = prompt("Pseudo invalide. Votre pseudo :");

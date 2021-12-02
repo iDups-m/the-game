@@ -9,18 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // socket open to the server
     let sock = io.connect();
 
-    sock.on("error", function(msg) {
-        alert(msg);
-    });
-
-    sock.on("players", function(players) {
-        console.log(players);
-        refreshTablePlayers(players);
-    });
-
-    sock.on("debug", function(games) {
-        console.log(games);
-    });
 
     /** Join a room */
     let btnJoinRoom = document.getElementById("btnJoinRoom");
@@ -41,13 +29,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
-    /** To join the room */
+    /** To join a room */
     let btnJoin = document.getElementById("btnJoin");
     btnJoin.addEventListener("click", function (e) {
         sendPlayerServer(sock, "join_room");
     });
 
-    /** To join the room created */
+    /** To join a room created */
     let btnCreate = document.getElementById("btnCreate");
     btnCreate.addEventListener("click", function (e) {
         sendPlayerServer(sock, "create_room");
@@ -76,4 +64,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
         }
     });*/
+
+
+    /******************************************************************
+     *                   Listen of the socket                         *
+     ******************************************************************/
+
+    sock.on("error", function(msg) {
+        alert(msg);
+    });
+
+    sock.on("players", function(players) {
+        refreshTablePlayers(players);
+    });
+
+    sock.on("debug", function(games) {
+        console.log(games);
+    });
+
+
 });

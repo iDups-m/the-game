@@ -49,9 +49,6 @@ function addPlayer(name){
     document.querySelector("tbody").appendChild(tr);
 }
 
-function toggleStatePlayers(name){
-
-}
 
 /**
  * Function that refresh the table of players. Called the server return new players
@@ -60,12 +57,7 @@ function toggleStatePlayers(name){
 function refreshTablePlayers(players){
     document.getElementById("tblPlayers").textContent = ''; //to remove every children
     prepareTablePlayersDom();
-    if(!Array.isArray(players)){
-        addPlayer(players);
-        return;
-    }
-
     for (const player in players) {
-        addPlayer(player);
+        addPlayer(players[player]);
     }
 }

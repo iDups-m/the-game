@@ -55,6 +55,7 @@ table {
     z-index: -1;
 }
 
+
 #h1_welcome {
     text-align: center;
     margin-top: 70px;
@@ -107,7 +108,7 @@ button:hover {
 #sectionPlayers {
     position: relative;
     border: solid 1px white;
-    width: 90%;
+    width: 50%;
     margin: 20px auto;
     padding: 10px;
     border-radius: 10px;
