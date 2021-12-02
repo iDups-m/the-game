@@ -1,18 +1,10 @@
 "use strict";
 
-/*
- * Useful functions
- */
-function randomCard() {
-    let value = Math.floor(Math.random() * (98 - 2 + 1) + 2);
-    return value.toString();
-}
-
-/*
- * ---------------------------------------------------------------------
- */
+let deck = [];
+let playing = false;
 
 document.addEventListener("DOMContentLoaded", function() {
+    createDeck(deck);
 
     // socket open to the server
     let sock = io.connect();
@@ -29,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
     sock.on("debug", function(games) {
         console.log(games);
     });
-
 
     /** Join a room */
     let btnJoinRoom = document.getElementById("btnJoinRoom");
@@ -62,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
         sendPlayerServer(sock, "create_room");
     });
 
-    /** Afficher la partie : TEMPORAIRE */
+    /** TEMPORARY */
     let btnPlay = document.getElementById("btnPlay");
     btnPlay.addEventListener("click", function (e) {
         hide_DOM("h1_welcome");
@@ -71,15 +62,18 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     /** flip the card on the top of the pick */
-    let res = false;
     let pick = document.getElementById("pick").lastElementChild;
-    pick.addEventListener("click", function(e) {
-        if (!res) {
+    deal(deck, pick);
+    /*pick.addEventListener("click", function(e) {
+        if (!e.target.parentNode.classList.contains("flip")) {
             let card = "10";
             e.target.style.backgroundSize = "135px 198px";
             e.target.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
             e.target.parentNode.classList.add("flip");
+        } else {
+            e.target.style.transform = "translate(100px, 500px)";
+            e.target.style.transition = "all .6s ease-int-out";
+
         }
-        res = true;
-    });
+    });*/
 });
