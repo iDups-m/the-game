@@ -141,7 +141,7 @@ function sendPlayerServer(sock, type_emit){
     /*Check number of players choosed*/
     let nbPlayers = document.querySelector("input:checked").value;
 
-    /*Check public or public room choosed*/
+    /*Check public or private room choosed*/
     let visibility = "PUBLIC";
     if(document.getElementById('private').checked) {
         visibility = prompt("The name of the room :");

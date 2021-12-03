@@ -94,4 +94,10 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("Not possible to create the room. " + msg);
         location.reload();
     });
+
+    sock.on("start", function (){
+        hide_DOM("h1_welcome");
+        hide_DOM("welcome");
+        display_DOM("game");
+    })
 });

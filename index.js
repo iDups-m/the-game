@@ -35,25 +35,68 @@ let nbRooms = {
 
 
 /**
- *  Removed game
- *  @param nbPlayers the number of the players in the room
- *  @param game the game to remove
+ *  Removed the room from games
+ *  @param nbPlayers the number of the players of the room
+ *  @param index_room the room to remove
  */
-function removeGame(nbPlayers, game) {
-    console.log("Remove the game " + game + " of " + nbPlayers + " players");
-    delete games[nbPlayers][game];
+function removeRoom(nbPlayers, index_room) {
+    console.log("Remove the room " + index_room + " of " + nbPlayers + " players");
+    delete games[nbPlayers][index_room];
 }
 
 /**
- *  Removed player in the game
- *  @param nbPlayers the number of the players in the room
- *  @param game the game to remove
- *  @param num the player to remove
+ *  Removed the player from the room
+ *  @param nbPlayers the number of the players of the room
+ *  @param index_room the room to remove
+ *  @param index_player the player to remove
  */
-function removePlayer(nbPlayers, game, num) {
-    console.log("Remove the player number " + num + " of the game " + game + " of " + nbPlayers + " players");
-    delete games[nbPlayers][game][num];
+function removePlayer(nbPlayers, index_room, index_player) {
+    console.log("Remove the player number " + index_player + " of the room " + index_room + " of " + nbPlayers + " players");
+    delete games[nbPlayers][index_room]["players"][index_player];
+}
 
+/**
+ * Send players information to all players in the room
+ * Call when a player left or enter the room
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ */
+function sendPlayers(nbPlayers, index_room) {
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    let visibility = games[nbPlayers][index_room]["visibility"];
+    let names = [];
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            names.push(name);
+        }
+    }
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            games[nbPlayers][index_room]["players"][i][name].emit("players", {
+                names: names,
+                nbPlayers: nbPlayers,
+                visibility: visibility,
+            });
+        }
+    }
+}
+
+
+/**
+ *
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ */
+function startGame(nbPlayers, index_room) {
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            games[nbPlayers][index_room]["players"][i][name].emit("start");
+        }
+    }
 }
 
 
@@ -67,7 +110,7 @@ io.on('connection', function(socket) {
     // debug message
     console.log("player connected");
 
-    let state = 0;                  // 0 : not connected, 1 : connected
+    let state = -1;                  // -1 : not connected, 0 : connected, 1 : playing
     let nbPlayersInGame = null;     // the number players planed playing with the player in the room
     let index_room = null;          // the number of the room where the player is playing
     let index_player = null;        // the number of the player in the room
@@ -79,8 +122,8 @@ io.on('connection', function(socket) {
      *  @param visibility "PUBLIC" or the name given
      */
     socket.on("join_room", function(name, nbPlayers, visibility) {
-        // if player is already playing
-        if(state === 1) {
+        // if player is already connected or playing
+        if(state !== -1) {
             socket.emit("error_join", "Player already connected.");
             return;
         }
@@ -110,44 +153,40 @@ io.on('connection', function(socket) {
             let length = Object.keys(games[nbPlayers][roomFree]["players"]).length;
             let names = [];
             for (let i=0; i<length; ++i){
-                names.push(Object.keys(games[nbPlayers][roomFree]["players"][i])[0]);
+                if(games[nbPlayers][roomFree]["players"][i]){
+                    names.push(Object.keys(games[nbPlayers][roomFree]["players"][i])[0]);
+                }
             }
             if(names.includes(name)){
                 socket.emit("error_join", "A player with this name is already connected.");
                 return;
+
+                //TODO : creation of a room...
             }
 
             index_room = roomFree;
             index_player = names.length; //TODO: à vérifier en cas de suppression de joueur
         }
 
-        state = 1;
+        state = 0;
         nbPlayersInGame = nbPlayers;
-        /*games[nbPlayers][index_room]["players"][index_player] = {
-            [name] : socket,
-        };*/
         games[nbPlayers][index_room]["players"][index_player] = {
-            [name] : "la socket",
+            [name] : socket,
         };
 
-        let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
-        let names = [];
-        for (let i=0; i<length; ++i){
-            names.push(Object.keys(games[nbPlayers][index_room]["players"][i])[0]);
-        }
+        sendPlayers(nbPlayers, index_room);
+        //socket.emit("debug", games);
 
-        socket.emit("players", {
-            names : names,
-            nbPlayers : nbPlayersInGame,
-            visibility : visibility,
-        });
-        socket.emit("debug", games);
+        if(Object.keys(games[nbPlayers][index_room]["players"]).length == nbPlayersInGame){
+            // Room completed
+            startGame(nbPlayers, index_room);
+        }
     });
 
 
     socket.on("create_room", function (name, nbPlayers, visibility){
-        // if player is already playing
-        if(state === 1) {
+        // if player is already connected or playing
+        if(state !== -1) {
             socket.emit("error_join", "Player already connected.");
             return;
         }
@@ -162,29 +201,26 @@ io.on('connection', function(socket) {
             }
         }
 
-        state = 1;
+        state = 0;
         index_room = nbRooms[nbPlayers];
         nbPlayersInGame = nbPlayers;
         index_player = 0; //first in the room
+        nbRooms[nbPlayers]++;
 
         games[nbPlayers][index_room] = {
             visibility : visibility,
             players : {},
         };
-        /*games[nbPlayers][index_room][players][index_player] = {
-            [name] : socket,
-        };*/
         games[nbPlayers][index_room]["players"][index_player] = {
-            [name] : "la socket",
+            [name] : socket,
         };
-        nbRooms[nbPlayers]++;
 
         socket.emit("players", {
             names : Object.keys(games[nbPlayers][index_room]["players"][0]),
             nbPlayers : nbPlayersInGame,
             visibility : visibility,
         });
-        socket.emit("debug", games);
+        //socket.emit("debug", games);
     });
 
 
@@ -192,25 +228,28 @@ io.on('connection', function(socket) {
      *  log out handler
      */
     socket.on("disconnect", function() {
-        console.log("Player logged out");
+
+        if(state === 0) {
+            // room isn't yet playing
+
+            let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
+            console.log("Player " + name + " logged out");
+
+            sendPlayers(nbPlayersInGame, index_room);
+            removePlayer(nbPlayersInGame, index_room, index_player);
+        }
 
         if(state === 1) {
-            let name = games[nbPlayersInGame][index_room]["players"][index_player][0];
+            // game in progress
+
+            let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
             console.log("End of the game, " + name + " has left");
 
-            let length = Object.keys(games[nbPlayersInGame][index_room]["players"]).length;
-            for (let i=0; i<length; ++i){
-                //games[nbPlayersInGame][index_room]["players"][i][0].emit("disconnection", "End of the game, " + name + " has left.");
-            }
-
-            // If game has begin
-            //removeGame(nbPlayersInGame, game);
-
-            // For the moment :
-            //removePlayer(nbPlayersInGame, game, num);
-
-            state = 0;
+            removeRoom(nbPlayersInGame, index_room);
         }
+
+        state = -1;
+
     });
 
 });
