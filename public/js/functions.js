@@ -1,6 +1,76 @@
 "use strict";
 
 /**********************************************************************
+ ***              useful functions to create the board              ***
+ **********************************************************************/
+
+function createHand(nbCard = 7) {
+    let hand = document.getElementById("hand");
+
+    for (let i = 0; i < nbCard; i++) {
+        let span = document.createElement("SPAN");
+        span.classList.add("card");
+        let div = document.createElement("DIV");
+        div.classList.add("faceCard", "hand");
+        span.appendChild(div);
+        hand.appendChild(span);
+    }
+}
+
+function createBase() {
+    let base = document.getElementById("base");
+
+    for (let i = 0; i < 2; i++) {
+        let span = document.createElement("SPAN");
+        span.classList.add("card");
+        let div = document.createElement("DIV");
+        div.classList.add("face", "base1");
+        span.appendChild(div);
+        base.appendChild(span);
+    }
+
+    for (let i = 0; i < 2; i++) {
+        let span = document.createElement("SPAN");
+        span.classList.add("card");
+        let div = document.createElement("DIV");
+        div.classList.add("face", "base2");
+        span.appendChild(div);
+        base.appendChild(span);
+    }
+}
+
+function createStack() {
+    let stack = document.getElementById("stack");
+
+    for (let i = 0; i < 4; i++) {
+        let span = document.createElement("SPAN");
+        span.classList.add("card");
+        let div = document.createElement("DIV");
+        div.classList.add("face", "stack");
+        span.appendChild(div);
+        stack.appendChild(span);
+    }
+}
+
+function createPick() {
+    let pick = document.getElementById("pick");
+
+    for (let i = 0; i < 10; i++) {
+        let span = document.createElement("SPAN");
+        span.classList.add("card");
+        let divFront = document.createElement("DIV");
+        divFront.classList.add("face", "pickFront");
+        span.appendChild(divFront);
+        let divBack = document.createElement("DIV");
+        divBack.classList.add("face", "pickBack");
+        span.appendChild(divBack);
+        pick.appendChild(span);
+    }
+
+    //TODO : modify the positions of the cards of the pick
+}
+
+/**********************************************************************
  ***                  useful functions of the game                  ***
  **********************************************************************/
 

@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // socket open to the server
     let sock = io.connect();
 
-
     /** Join a room */
     let btnJoinRoom = document.getElementById("btnJoinRoom");
     btnJoinRoom.addEventListener("click", function (e) {
@@ -50,9 +49,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     /** flip the card on the top of the pick */
-    let pick = document.getElementById("pick").lastElementChild;
+    /*let pick = document.getElementById("pick").lastElementChild;
     deal(deck, pick);
-    /*pick.addEventListener("click", function(e) {
+    pick.addEventListener("click", function(e) {
         if (!e.target.parentNode.classList.contains("flip")) {
             let card = "10";
             e.target.style.backgroundSize = "135px 198px";
@@ -65,6 +64,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });*/
 
+    /*
+     * default creation of the hand with 7 cards
+     */
+    createBase();
+    createStack();
+    createHand();
+    createPick();
 
     /******************************************************************
      *                   Listen of the socket                         *
@@ -81,6 +87,4 @@ document.addEventListener("DOMContentLoaded", function() {
     sock.on("debug", function(games) {
         console.log(games);
     });
-
-
 });

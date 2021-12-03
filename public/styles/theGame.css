@@ -309,10 +309,10 @@ blockquote:before, blockquote:after {
 }
 .hand-position {
     position: absolute;
-    top: 89%;
+    top: 83%;
     left: 36%;
-    margin-top: -50px;
-    margin-left: -50px;
+    margin-top: auto;
+    margin-left: auto;
 }
 .chat-position {
     position: absolute;
@@ -321,7 +321,6 @@ blockquote:before, blockquote:after {
     width: 390px;
     height: 1080px;
 }
-
 #pick > span {
     margin-right: -160px;
 }
