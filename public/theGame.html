@@ -19,7 +19,7 @@
                 <img id="load" src="./pictures/load.gif" alt="load" />
 
                 <section id="sectionPlayers">
-                    <p id="p_co">Conneted players ready to play :</p>
+                    <p id="p_co">Connected players ready to play :</p>
                     <table id="tblPlayers">
                     </table>
                 </section>
@@ -31,13 +31,20 @@
                 </div>
 
                 <section id="radios">
-                    <p id="p_how_many">With how many players ?</p>
-                    <input type="radio" id="case2" name="nbJoueurs" value="2" checked>
+                    <div id="p_radios">
+                        <p>With how many players ?</p>
+                        <p>In a public or a private room ?</p>
+                    </div>
+                    <input type="radio" id="case2" name="nbPlayers" value="2" checked>
                     <label for="case2">2</label>
-                    <input type="radio" id="case3" name="nbJoueurs" value="3">
+                    <input type="radio" id="case3" name="nbPlayers" value="3">
                     <label for="case3">3</label>
-                    <input type="radio" id="case4" name="nbJoueurs" value="4">
+                    <input type="radio" id="case4" name="nbPlayers" value="4">
                     <label for="case4">4</label>
+                    <input type="radio" id="public" name="visibility" value="public" checked>
+                    <label for="public">public</label>
+                    <input type="radio" id="private" name="visibility" value="private">
+                    <label for="private">private</label>
                     <button id="btnJoin">Join</button>
                     <button id="btnCreate">Create</button>
                 </section>

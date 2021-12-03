@@ -49,20 +49,34 @@ function randomCard() {
  ***          useful functions to connect with the server           ***
  **********************************************************************/
 
+/**
+ * Ask the server in order to add a player in a room
+ * @param sock socket of communication for the server
+ * @param type_emit join or create a room
+ */
 function sendPlayerServer(sock, type_emit){
     var regex = /[a-zA-Z0-9._ -]+/;
-    let name = prompt("Votre pseudo :");
+    let name = prompt("Your name :");
     while ((name.trim().length === 0) || (name.match(regex) === null) || name.match(regex)[0] !== name){
-        name = prompt("Pseudo invalide. Votre pseudo :");
+        name = prompt("Not valid name. Your name :");
     }
 
     /*Check number of players choosed*/
     let nbPlayers = document.querySelector("input:checked").value;
+
+    /*Check public or public room choosed*/
+    let visibility = "PUBLIC";
+    if(document.getElementById('private').checked) {
+        visibility = prompt("The name of the room :");
+        while ((visibility.trim().length === 0) || (visibility === "PUBLIC") || (visibility.match(regex) === null) || visibility.match(regex)[0] !== visibility){
+            visibility = prompt("Not valid name. The name of the room :");
+        }
+    }
 
     /*Hide button "log in" and display "ready to play" one*/
     hide_DOM("radios");
     display_DOM("p_waiting");
     display_DOM("load", "inline");
 
-    sock.emit(type_emit, name, nbPlayers);
+    sock.emit(type_emit, name, nbPlayers, visibility);
 }

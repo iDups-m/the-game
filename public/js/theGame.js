@@ -82,5 +82,14 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(games);
     });
 
+    sock.on("error_join", function(msg) {
+        alert("Not possible to join the room. " + msg);
+        location.reload();
+    });
+    sock.on("error_create", function(msg) {
+        alert("Not possible to create the room. " + msg);
+        location.reload();
+    });
+
 
 });

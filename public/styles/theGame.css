@@ -71,7 +71,7 @@ table {
     transform: translateY(-50%);
 }
 
-#p_welcome, #p_how_many, #p_waiting {
+#p_welcome, #p_radios {
     font-size: 25px;
     padding-bottom: 10px;
     margin-bottom: 40px;
@@ -117,24 +117,24 @@ button:hover {
     display: none;
 }
 
-/*section header {
-    text-align: center;
-    margin-bottom: 20px;
-}*/
-
 #radios {
     font-size: 20px;
     display: none;
 }
 
-#btnJoin, #btnCreate {
-    margin-left: 30px;
+#public, #btnJoin, #btnCreate {
+    margin-left: 50px;
 }
 
 th, td {
     padding: 3px 5px;
 }
 
+#h2_room_planned {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: left;
+}
 #p_co {
     font-size: 18px;
 }
