@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });*/
 
+
     /*
      * default creation of the hand with 7 cards
      */
