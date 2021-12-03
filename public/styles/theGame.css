@@ -46,16 +46,6 @@ table {
         welcome stylesheet
  *********************************/
 
-#background { /* wood picture on welcome page */
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -1;
-}
-
-
 #h1_welcome {
     text-align: center;
     margin-top: 70px;
@@ -64,26 +54,22 @@ table {
     color: white;
     text-shadow: 1px 1px 10px black;
 }
-
 #welcome {
     text-align: center;
     margin-top: 50vh;
     transform: translateY(-50%);
 }
-
 #p_welcome, #p_radios {
     font-size: 25px;
     padding-bottom: 10px;
     margin-bottom: 40px;
 }
-
 #load {
     text-align: center;
     margin-bottom: 20px;
     width: 50px;
     height: 50px;
 }
-
 button {
     margin-right: 10px;
     background-color: black;
@@ -116,20 +102,16 @@ button:hover {
 
     display: none;
 }
-
 #radios {
     font-size: 20px;
     display: none;
 }
-
 #public, #btnJoin, #btnCreate {
     margin-left: 50px;
 }
-
 th, td {
     padding: 3px 5px;
 }
-
 #h2_room_planned {
     font-size: 18px;
     margin-bottom: 20px;
@@ -138,8 +120,6 @@ th, td {
 #p_co {
     font-size: 18px;
 }
-
-
 #tblPlayers {
     width: 90%;
     margin: 10px auto;
@@ -153,8 +133,6 @@ th, td {
 #tblPlayers td {
     border: solid 1px white;
 }
-
-
 
 /*********************************
            card stylesheet
@@ -321,9 +299,9 @@ blockquote:before, blockquote:after {
     width: 390px;
     height: 1080px;
 }
-#pick > span {
+/*#pick > span {
     margin-right: -160px;
-}
+}*/
 #hand > span {
     margin-right: -100px;
 }

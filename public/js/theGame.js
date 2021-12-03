@@ -48,10 +48,16 @@ document.addEventListener("DOMContentLoaded", function() {
         display_DOM("game");
     });
 
+    /**
+     * init the board of the game
+     * - pick, stack, base, hand
+     */
+    initBoard();
+
     /** flip the card on the top of the pick */
-    /*let pick = document.getElementById("pick").lastElementChild;
+    let pick = document.getElementById("pick").lastElementChild;
     deal(deck, pick);
-    pick.addEventListener("click", function(e) {
+    /*pick.addEventListener("click", function(e) {
         if (!e.target.parentNode.classList.contains("flip")) {
             let card = "10";
             e.target.style.backgroundSize = "135px 198px";
@@ -63,15 +69,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         }
     });*/
-
-
-    /*
-     * default creation of the hand with 7 cards
-     */
-    createBase();
-    createStack();
-    createHand();
-    createPick();
 
     /******************************************************************
      *                   Listen of the socket                         *
@@ -97,6 +94,4 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("Not possible to create the room. " + msg);
         location.reload();
     });
-
-
 });

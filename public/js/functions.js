@@ -55,6 +55,8 @@ function createStack() {
 function createPick() {
     let pick = document.getElementById("pick");
 
+    let margin = -160;
+
     for (let i = 0; i < 10; i++) {
         let span = document.createElement("SPAN");
         span.classList.add("card");
@@ -64,10 +66,17 @@ function createPick() {
         let divBack = document.createElement("DIV");
         divBack.classList.add("face", "pickBack");
         span.appendChild(divBack);
+        span.style.marginRight = margin+"px";
+        margin += 1;
         pick.appendChild(span);
     }
+}
 
-    //TODO : modify the positions of the cards of the pick
+function initBoard() {
+    createBase();
+    createStack();
+    createHand();
+    createPick();
 }
 
 /**********************************************************************
@@ -85,29 +94,27 @@ function shuffle(deck) {
     let randomIndex;
 
     while (index !== 0) {
-
         randomIndex = Math.floor(Math.random() * index);
         index--;
-
-        [deck[index], deck[randomIndex]] = [
-            deck[randomIndex], deck[index]];
+        [deck[index], deck[randomIndex]] = [deck[randomIndex], deck[index]];
     }
 
     return deck;
 }
 
-function getCards(hand) {
-    for(let i = 0; i < hand.length; i++) {
-        //find the current card
-    }
-}
-
-function deal(deck, pick) {
+function deal(deck, pick, nbCards) {
+    const cardSize = "135px 198px";
     shuffle(deck);
-    let card = "10";
-    pick.firstElementChild.style.backgroundSize = "135px 198px";
-    pick.firstElementChild.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
-    pick.parentNode.classList.add("flip");
+    //deal the number of cards for the player
+    /*for (let i = 0; i < nbCards; i++) {
+
+    }*/
+    /*if (document.getElementById("game").style.display !== "NONE") {
+        let card = "10";
+        pick.firstElementChild.style.backgroundSize = cardSize;
+        pick.firstElementChild.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
+        pick.parentNode.classList.add("flip");
+    }*/
 }
 
 function randomCard() {
