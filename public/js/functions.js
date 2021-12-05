@@ -83,12 +83,6 @@ function initBoard() {
  ***                  useful functions of the game                  ***
  **********************************************************************/
 
-function createDeck(arr) {
-    for (let i = 2; i < 98; i++) {
-        arr.push(i);
-    }
-}
-
 function shuffle(deck) {
     let index = deck.length;
     let randomIndex;
@@ -119,11 +113,6 @@ function deal(deck, pick, nbCards) {
     pick.firstElementChild.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
     pick.firstElementChild.style.transform = "translate(100px, 500px)";
     pick.firstElementChild.style.transition = "all .6s ease-int-out";
-}
-
-function randomCard() {
-    let value = Math.floor(Math.random() * (98 - 2 + 1) + 2);
-    return value.toString();
 }
 
 /**********************************************************************

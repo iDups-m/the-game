@@ -83,9 +83,8 @@ function sendPlayers(nbPlayers, index_room) {
     }
 }
 
-
 /**
- *
+ * Send to every players that the game begin and create the deck
  * @param nbPlayers the number of the players of the room
  * @param index_room the room
  */
@@ -95,6 +94,47 @@ function startGame(nbPlayers, index_room) {
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
             games[nbPlayers][index_room]["players"][i][name].emit("start");
+        }
+    }
+
+    createDeck();
+}
+
+/**
+ * Had every cards of the deck (2 - 98)
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ */
+function createDeck(nbPlayers, index_room) {
+    for (let i = 2; i < 98; i++) {
+        games[nbPlayers][index_room]["deck"].push(i);
+    }
+}
+
+/**
+ * Get one card from the deck (from remaining cards)
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ * @returns {string} the number of the card
+ */
+function getCard(nbPlayers, index_room) {
+    let index = Math.floor(Math.random() * games[nbPlayers][index_room]["deck"].length);
+    let value = games[nbPlayers][index_room]["deck"][index];
+    return value.toString();
+}
+
+/**
+ * Send players information to all players in the room
+ * Call when a player left or enter the room
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ */
+function updateGame(nbPlayers, index_room) {
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            games[nbPlayers][index_room]["players"][i][name].emit("updateGame", games[nbPlayers][index_room]["deck"]);
         }
     }
 }
@@ -116,7 +156,7 @@ io.on('connection', function(socket) {
     let index_player = null;        // the number of the player in the room
 
     /**
-     *  Ask for a connection of the player.
+     *  Ask for a connection to join a room of the player.
      *  @param name the name of the player
      *  @param nbPlayers number of players in the room
      *  @param visibility "PUBLIC" or the name given
@@ -145,6 +185,13 @@ io.on('connection', function(socket) {
             games[nbPlayers][index_room] = {
                 visibility : visibility,
                 players : {},
+                deck : [], // Deck of the game (remaining cards)
+                heaps : {   // Value on top of the four heap
+                    0 : null,       // increasing heap
+                    1 : null,       //      "
+                    2 : null,       // decreasing heap
+                    3 : null,       //      "
+                },
             };
             nbRooms[nbPlayers]++;
 
@@ -184,6 +231,12 @@ io.on('connection', function(socket) {
     });
 
 
+    /**
+     *  Ask for a connection to create a room of the player.
+     *  @param name the name of the player
+     *  @param nbPlayers number of players in the room
+     *  @param visibility "PUBLIC" or the name given
+     */
     socket.on("create_room", function (name, nbPlayers, visibility){
         // if player is already connected or playing
         if(state !== -1) {
@@ -210,6 +263,13 @@ io.on('connection', function(socket) {
         games[nbPlayers][index_room] = {
             visibility : visibility,
             players : {},
+            deck : [], // Deck of the game (remaining cards)
+            heaps : {   // Value on top of the four heap
+                0 : null,       // increasing heap
+                1 : null,       //      "
+                2 : null,       // decreasing heap
+                3 : null,       //      "
+            },
         };
         games[nbPlayers][index_room]["players"][index_player] = {
             [name] : socket,
@@ -221,6 +281,45 @@ io.on('connection', function(socket) {
             visibility : visibility,
         });
         //socket.emit("debug", games);
+    });
+
+
+    /**
+     * Ask for a random card from the deck
+     */
+    socket.on("getCard", function() {
+        if(games[nbPlayersInGame][index_room]["deck"] == null){
+            socket.emit("error", "No deck, no game.");
+            return;
+        }
+
+        if(games[nbPlayersInGame][index_room]["deck"].length === 0){
+            socket.emit("error", "Empty deck.");
+        }
+
+        socket.emit("newCard", getCard());
+    });
+
+
+    /**
+     * Ask to had a new card on one heap
+     * @param heap number of the heap (0/1 -> increasing,   2/3 -> decreasing)
+     * @param value value of the card
+     */
+    socket.on("play", function(heap, value) {
+        if( (heap < 0) || (heap > 3)){
+            socket.emit("error", "Not valid heap.");
+            return;
+        }
+        if( (value < 2) || (value > 98)){
+            socket.emit("error", "Not valid heap.");
+            return;
+        }
+
+        // TODO : verifications
+
+        games[nbPlayersInGame][index_room]["heaps"][heap] = value;
+        updateGame(nbPlayersInGame, index_room);
     });
 
 

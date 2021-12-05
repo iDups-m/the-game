@@ -1,9 +1,6 @@
 "use strict";
 
-let deck = [];
-
 document.addEventListener("DOMContentLoaded", function() {
-    createDeck(deck);
 
     // socket open to the server
     let sock = io.connect();
