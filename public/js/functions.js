@@ -102,19 +102,19 @@ function shuffle(deck) {
     return deck;
 }
 
-function deal(deck, pick, nbCards) {
+function deal(deck, pick, nbCards, started) {
     const cardSize = "135px 198px";
     shuffle(deck);
     //deal the number of cards for the player
     /*for (let i = 0; i < nbCards; i++) {
 
     }*/
-    /*if (document.getElementById("game").style.display !== "NONE") {
+    if (started) {
         let card = "10";
         pick.firstElementChild.style.backgroundSize = cardSize;
         pick.firstElementChild.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
         pick.parentNode.classList.add("flip");
-    }*/
+    }
 }
 
 function randomCard() {

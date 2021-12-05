@@ -2,6 +2,7 @@
 
 let deck = [];
 let playing = false;
+let started = false;
 
 document.addEventListener("DOMContentLoaded", function() {
     createDeck(deck);
@@ -54,22 +55,6 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     initBoard();
 
-    /** flip the card on the top of the pick */
-    let pick = document.getElementById("pick").lastElementChild;
-    deal(deck, pick);
-    /*pick.addEventListener("click", function(e) {
-        if (!e.target.parentNode.classList.contains("flip")) {
-            let card = "10";
-            e.target.style.backgroundSize = "135px 198px";
-            e.target.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
-            e.target.parentNode.classList.add("flip");
-        } else {
-            e.target.style.transform = "translate(100px, 500px)";
-            e.target.style.transition = "all .6s ease-int-out";
-
-        }
-    });*/
-
     /******************************************************************
      *                   Listen of the socket                         *
      ******************************************************************/
@@ -95,9 +80,30 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
     });
 
-    sock.on("start", function (){
+    sock.on("start", function () {
         hide_DOM("h1_welcome");
         hide_DOM("welcome");
         display_DOM("game");
+        started = true;
     })
 });
+
+/******************************************************************
+ *                        handle the game                         *
+ ******************************************************************/
+
+/** flip the card on the top of the pick */
+let pick = document.getElementById("pick").lastElementChild;
+deal(deck, pick, 7, started);
+/*pick.addEventListener("click", function(e) {
+    if (!e.target.parentNode.classList.contains("flip")) {
+        let card = "10";
+        e.target.style.backgroundSize = "135px 198px";
+        e.target.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
+        e.target.parentNode.classList.add("flip");
+    } else {
+        e.target.style.transform = "translate(100px, 500px)";
+        e.target.style.transition = "all .6s ease-int-out";
+
+    }
+});*/
