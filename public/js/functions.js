@@ -105,7 +105,6 @@ function shuffle(deck) {
 function deal(deck, pick, nbCards, started) {
     const cardSize = "135px 198px";
     shuffle(deck);
-    //deal the number of cards for the player
     /*for (let i = 0; i < nbCards; i++) {
 
     }*/
