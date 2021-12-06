@@ -97,7 +97,7 @@ function startGame(nbPlayers, index_room) {
         }
     }
 
-    createDeck();
+    createDeck(nbPlayers, index_room);
 }
 
 /**
@@ -123,6 +123,19 @@ function getCard(nbPlayers, index_room) {
     return value.toString();
 }
 
+
+/**
+ * Get one card from the deck (from remaining cards)
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ * @returns {string} the number of the card
+ */
+function getCard(nbPlayers, index_room) {
+    let index = Math.floor(Math.random() * games[nbPlayers][index_room]["deck"].length);
+    let value = games[nbPlayers][index_room]["deck"][index];
+    return value.toString();
+}
+
 /**
  * Send players information to all players in the room
  * Call when a player left or enter the room
@@ -134,7 +147,7 @@ function updateGame(nbPlayers, index_room) {
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
-            games[nbPlayers][index_room]["players"][i][name].emit("updateGame", games[nbPlayers][index_room]["deck"]);
+            games[nbPlayers][index_room]["players"][i][name].emit("updateGame", games[nbPlayers][index_room]["heaps"]);
         }
     }
 }
@@ -263,8 +276,8 @@ io.on('connection', function(socket) {
         games[nbPlayers][index_room] = {
             visibility : visibility,
             players : {},
-            deck : [], // Deck of the game (remaining cards)
-            heaps : {   // Value on top of the four heap
+            deck : [],          // Deck of the game (remaining cards)
+            heaps : {           // Value on top of the four heap
                 0 : null,       // increasing heap
                 1 : null,       //      "
                 2 : null,       // decreasing heap
