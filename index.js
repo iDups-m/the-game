@@ -109,6 +109,15 @@ function createDeck(nbPlayers, index_room) {
     for (let i = 2; i < 98; i++) {
         games[nbPlayers][index_room]["deck"].push(i);
     }
+
+    /* Shuffle deck (even if card will be taken randomly) */
+    let index = games[nbPlayers][index_room]["deck"].length;
+    let randomIndex;
+    while (index !== 0) {
+        randomIndex = Math.floor(Math.random() * index);
+        index--;
+        [games[nbPlayers][index_room]["deck"][index], games[nbPlayers][index_room]["deck"][randomIndex]] = [games[nbPlayers][index_room]["deck"][randomIndex], games[nbPlayers][index_room]["deck"][index]];
+    }
 }
 
 /**
@@ -287,7 +296,7 @@ io.on('connection', function(socket) {
     /**
      * Ask for random cards from the deck for the head
      * Only call at the beginning of the game
-     * @param nbCards number of cards in the hand, depend
+     * @param nbCards number of cards in the hand, depend of the number of players
      */
     socket.on("getHand", function(nbCards) {
         if(games[nbPlayersInGame][index_room]["deck"] == null){
@@ -300,7 +309,7 @@ io.on('connection', function(socket) {
 
         let cards = [];
         for(let i=0; i<nbCards; ++i){
-            cards.push(getCard());
+            cards.push(getCard(nbPlayersInGame, index_room));
         }
 
         socket.emit("hand", cards);
@@ -320,7 +329,7 @@ io.on('connection', function(socket) {
             socket.emit("error", "Empty deck.");
         }
 
-        socket.emit("newCard", getCard());
+        socket.emit("newCard", getCard(nbPlayersInGame, index_room));
     });
 
 
