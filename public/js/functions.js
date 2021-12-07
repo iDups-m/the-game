@@ -79,6 +79,21 @@ function initBoard() {
     createPick();
 }
 
+function returnCard(style, cardSize, card) {
+    style.transform = "rotateY(180deg)";
+    style.transformStyle = "preserve-3d";
+    style.transition = "all .4s ease-in-out";
+    style.backfaceVisibility = "hidden";
+    style.zIndex = "900";
+    style.backgroundSize = cardSize;
+    style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
+}
+
+function moveCard(style) {
+    style.transform = "translate(100px, 500px)";
+    style.transition = "all .6s ease-int-out";
+}
+
 /**********************************************************************
  ***                  useful functions of the game                  ***
  **********************************************************************/
@@ -99,20 +114,12 @@ function shuffle(deck) {
 function deal(deck, pick, nbCards) {
     const cardSize = "135px 198px";
     shuffle(deck);
-    /*for (let i = 0; i < nbCards; i++) {
-
-    }*/
-    let card = "10";
-    pick.parentNode.classList.add("flip");
-    pick.firstElementChild.style.transform = "rotateY(180deg)";
-    pick.firstElementChild.style.transformStyle = "preserve-3d";
-    pick.firstElementChild.style.transition = "all .4s ease-in-out";
-    pick.firstElementChild.style.backfaceVisibility = "hidden";
-    pick.firstElementChild.style.zIndex = "900";
-    pick.firstElementChild.style.backgroundSize = cardSize;
-    pick.firstElementChild.style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
-    pick.firstElementChild.style.transform = "translate(100px, 500px)";
-    pick.firstElementChild.style.transition = "all .6s ease-int-out";
+    //for (let i = 0; i < nbCards; i++) {
+        let card = "10";
+        pick.parentNode.classList.add("flip");
+        returnCard(pick.firstElementChild.style, cardSize, card);
+        moveCard(pick.firstElementChild.style);
+    //}
 }
 
 /**********************************************************************
