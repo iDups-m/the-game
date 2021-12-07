@@ -70,7 +70,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         initBoard(nbCards);
 
+        sock.emit("getHand", nbCards);
+    });
+
+    sock.on("hand", function(arr) {
         let pick = document.getElementById("pick").lastElementChild;
-        setTimeout(function () {deal(pick, nbCards)}, 2000);
+        setTimeout(function () {deal(pick, arr)}, 2000);
     });
 });

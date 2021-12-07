@@ -7,12 +7,16 @@
 function getNbCards(nbPlayers) {
     let nbCards;
     switch (parseInt(nbPlayers)) {
-        case 2 : nbCards = 7;
+        case 2 :
+            nbCards = 7;
         break;
-        case 3 : nbCards = 6;
+        case 3 :
+        case 4 :
+            nbCards = 6;
         break;
-        case 4 : nbCards = 6;
-        break;
+        default :
+            nbCards = 0;
+            alert("Error : wrong number of players");
     }
     return nbCards;
 }
@@ -92,14 +96,14 @@ function initBoard(nbCards) {
     createPick();
 }
 
-function returnCard(style, cardSize, card) {
+function flipCard(style, cardNumber, cardSize) {
     style.transform = "rotateY(180deg)";
     style.transformStyle = "preserve-3d";
     style.transition = "all .4s ease-in-out";
     style.backfaceVisibility = "hidden";
     style.zIndex = "900";
     style.backgroundSize = cardSize;
-    style.backgroundImage = "url('./pictures/cards/" + card + ".jpg')";
+    style.backgroundImage = "url('./pictures/cards/" + cardNumber + ".jpg')";
 }
 
 function moveCard(style) {
@@ -111,12 +115,12 @@ function moveCard(style) {
  ***                  useful functions of the game                  ***
  **********************************************************************/
 
-function deal(pick, nbCards) {
+function deal(pick, arr) {
     const cardSize = "135px 198px";
-    for (let i = 0; i < nbCards; i++) {
-        let card = "10";
+    for (let i = 0; i < arr.length; i++) {
+        let card = arr[i];
         pick.parentNode.classList.add("flip");
-        returnCard(pick.firstElementChild.style, cardSize, card);
+        flipCard(pick.firstElementChild.style, card, cardSize);
         moveCard(pick.firstElementChild.style);
     }
 }
