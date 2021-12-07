@@ -72,5 +72,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let pick = document.getElementById("pick").lastElementChild;
         setTimeout(function () {deal(pick, nbCards)}, 2000);
-    })
+    });
 });

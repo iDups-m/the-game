@@ -6,16 +6,13 @@
 
 function getNbCards(nbPlayers) {
     let nbCards;
-    switch (nbPlayers) {
+    switch (parseInt(nbPlayers)) {
         case 2 : nbCards = 7;
         break;
-        case 3 :
-        case 4 :
-            nbCards = 6;
+        case 3 : nbCards = 6;
         break;
-        default :
-            nbCards = 0;
-            alert("Error : wrong number of player");
+        case 4 : nbCards = 6;
+        break;
     }
     return nbCards;
 }
