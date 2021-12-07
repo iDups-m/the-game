@@ -93,7 +93,7 @@ function startGame(nbPlayers, index_room) {
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
-            games[nbPlayers][index_room]["players"][i][name].emit("start");
+            games[nbPlayers][index_room]["players"][i][name].emit("start", nbPlayers);
         }
     }
 
@@ -296,9 +296,31 @@ io.on('connection', function(socket) {
         //socket.emit("debug", games);
     });
 
+    /**
+     * Ask for random cards from the deck for the head
+     * Only call at the beginning of the game
+     * @param nbCards number of cards in the hand, depend
+     */
+    socket.on("getHand", function(nbCards) {
+        if(games[nbPlayersInGame][index_room]["deck"] == null){
+            socket.emit("error", "No deck, no game.");
+            return;
+        }
+        if(games[nbPlayersInGame][index_room]["deck"].length < nbCards){
+            socket.emit("error", "Empty deck.");
+        }
+
+        let cards = [];
+        for(let i=0; i<nbCards; ++i){
+            cards.push(getCard());
+        }
+
+        socket.emit("hand", cards);
+    });
+
 
     /**
-     * Ask for a random card from the deck
+     * Ask for one random card from the deck
      */
     socket.on("getCard", function() {
         if(games[nbPlayersInGame][index_room]["deck"] == null){

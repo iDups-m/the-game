@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
     });
 
-    sock.on("start", function () {
+    sock.on("start", function (nbPlayers) {
         hide_DOM("h1_welcome");
         hide_DOM("welcome");
         display_DOM("game");
