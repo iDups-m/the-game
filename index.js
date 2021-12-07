@@ -106,7 +106,7 @@ function startGame(nbPlayers, index_room) {
  * @param index_room the room
  */
 function createDeck(nbPlayers, index_room) {
-    for (let i = 2; i < 98; i++) {
+    for (let i = 2; i < 50; i++) {
         games[nbPlayers][index_room]["deck"].push(i);
     }
 

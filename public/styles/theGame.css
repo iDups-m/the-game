@@ -242,20 +242,33 @@ blockquote:before, blockquote:after {
     z-index: 10;
 }
 .card .pickFront {
-    background-image: url("../pictures/pick.jpg");
+    background-size: 135px 198px;
     transform: rotateY(0deg);
     transition: all .4s ease-in-out;
     backface-visibility: visible;
     z-index: 10;
 }
 .card .pickBack {
-    background-image: url("../pictures/cards/10.jpg");
     background-size: 135px 198px;
     transform: rotateY(180deg);
     transform-style: preserve-3d;
     transition: all .4s ease-in-out;
     backface-visibility: hidden;
     z-index: 5;
+}
+.card.flip .pickFront {
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+    transition: all .4s ease-in-out;
+    backface-visibility: hidden;
+    z-index: 900;
+}
+.card.flip .pickBack {
+    transform: rotateY(0deg);
+    transform-style: preserve-3d;
+    transition: all .4s ease-in-out;
+    backface-visibility: visible;
+    z-index: 1000;
 }
 .pick-position {
     position: absolute;
@@ -285,9 +298,6 @@ blockquote:before, blockquote:after {
     width: 390px;
     height: 1080px;
 }
-/*#pick > span {
-    margin-right: -160px;
-}*/
 #hand > span {
     margin-right: -100px;
 }

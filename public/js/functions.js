@@ -79,6 +79,7 @@ function createPick() {
         span.classList.add("card");
         let divFront = document.createElement("DIV");
         divFront.classList.add("face", "pickFront");
+        divFront.style.backgroundImage = "url(\"./pictures/pick.jpg\")";
         span.appendChild(divFront);
         let divBack = document.createElement("DIV");
         divBack.classList.add("face", "pickBack");
@@ -96,19 +97,14 @@ function initBoard(nbCards) {
     createPick();
 }
 
-function flipCard(style, cardNumber, cardSize) {
-    style.transform = "rotateY(180deg)";
-    style.transformStyle = "preserve-3d";
-    style.transition = "all .4s ease-in-out";
-    style.backfaceVisibility = "hidden";
-    style.zIndex = "900";
-    style.backgroundSize = cardSize;
-    style.backgroundImage = "url('./pictures/cards/" + cardNumber + ".jpg')";
+function flipCard(card, cardNumber) {
+    card.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+cardNumber+".jpg')";
+    card.classList.add("flip");
 }
 
-function moveCard(style) {
-    style.transform = "translate(100px, 500px)";
-    style.transition = "all .6s ease-int-out";
+function moveCard(card) {
+    card.style.transform = "translate(100px, 500px)";
+    card.style.transition = "all 1s ease-in-out";
 }
 
 /**********************************************************************
@@ -116,12 +112,12 @@ function moveCard(style) {
  **********************************************************************/
 
 function deal(pick, arr) {
-    const cardSize = "135px 198px";
-    for (let i = 0; i < arr.length; i++) {
-        let card = arr[i];
-        pick.parentNode.classList.add("flip");
-        flipCard(pick.firstElementChild.style, card, cardSize);
-        moveCard(pick.firstElementChild.style);
+    for (let i = 0; i < arr.length; i++, setTimeout(function() {}, 200)) {
+        let cardNumber = "2";//arr[i];
+        let clone = pick.cloneNode(true);
+        pick.after(clone);
+        flipCard(clone, cardNumber);
+        setTimeout(function () {moveCard(clone)}, 400);
     }
 }
 
