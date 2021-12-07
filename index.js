@@ -16,6 +16,9 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/public/theGame.html');
 });
 
+let MIN_CARD = 2;
+let MAX_CARD = 50; //TODO : set to 99 when every cards created
+
 /***************************************************************
                 handle client and the game
  ***************************************************************/
@@ -106,7 +109,7 @@ function startGame(nbPlayers, index_room) {
  * @param index_room the room
  */
 function createDeck(nbPlayers, index_room) {
-    for (let i = 2; i < 98; i++) {
+    for (let i = MIN_CARD; i < MAX_CARD; i++) {
         games[nbPlayers][index_room]["deck"].push(i);
     }
 
@@ -145,6 +148,21 @@ function updateGame(nbPlayers, index_room) {
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
             games[nbPlayers][index_room]["players"][i][name].emit("updateGame", games[nbPlayers][index_room]["heaps"]);
+        }
+    }
+}
+
+/**
+ * Warn players of the room that the deck is empty
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ */
+function warnEmptyDeck(nbPlayers, index_room) {
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            games[nbPlayers][index_room]["players"][i][name].emit("emptyDeck");
         }
     }
 }
@@ -330,6 +348,9 @@ io.on('connection', function(socket) {
         }
 
         socket.emit("newCard", getCard(nbPlayersInGame, index_room));
+        if(games[nbPlayersInGame][index_room]["deck"].length === 0){
+            warnEmptyDeck(nbPlayersInGame, index_room);
+        }
     });
 
 
@@ -348,9 +369,22 @@ io.on('connection', function(socket) {
             return;
         }
 
-        // TODO : verifications
+        // TODO : verifier que c'est au tour du joueur
 
-        games[nbPlayersInGame][index_room]["heaps"][heap] = value;
+        let oldValue = games[nbPlayersInGame][index_room]["heaps"][heap];
+        if(heap < 2){
+            // increasing heap, new card must be bigger than the card on top of the heap or have 10 points less
+            if( (oldValue < value) && (oldValue-10 !== value) ){
+                socket.emit("error", "The new card must be bigger than that on top of the heap " + heap);
+            }
+        } else {
+            // decreasing heap, new card must be smaller than the card on top of the heap or have 10 points more
+            if( (oldValue > value) && (oldValue+10 !== value) ){
+                socket.emit("error", "The new card must be smaller than that on top of the heap " + heap);
+            }
+        }
+
+        games[nbPlayersInGame][index_room]["heaps"][heap] =  value;
         updateGame(nbPlayersInGame, index_room);
     });
 
