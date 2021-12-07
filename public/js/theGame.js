@@ -61,16 +61,18 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
     });
 
-    sock.on("start", function (nbPlayers) {
+    sock.on("start", function (info) {
         hide_DOM("h1_welcome");
         hide_DOM("welcome");
         display_DOM("game");
 
-        let nbCards = getNbCards(nbPlayers);
+        let nbCards = getNbCards(info.numberPlayers);
 
         initBoard(nbCards);
 
         sock.emit("getHand", nbCards);
+
+        alert("A toi de jouer : " + info.youBegin);
     });
 
     sock.on("hand", function(arr) {
