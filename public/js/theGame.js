@@ -36,23 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
         sendPlayerServer(sock, "create_room");
     });
 
-    /** TEMPORARY */
-    let btnPlay = document.getElementById("btnPlay");
-    btnPlay.addEventListener("click", function (e) {
-        hide_DOM("h1_welcome");
-        hide_DOM("welcome");
-        display_DOM("game");
-
-        let pick = document.getElementById("pick").lastElementChild;
-        setTimeout(function () {deal(deck, pick, 7)}, 2000);
-    });
-
-    /**
-     * init the board of the game
-     * - pick, stack, base, hand
-     */
-    initBoard();
-
     /******************************************************************
      *                   Listen of the socket                         *
      ******************************************************************/
@@ -82,5 +65,12 @@ document.addEventListener("DOMContentLoaded", function() {
         hide_DOM("h1_welcome");
         hide_DOM("welcome");
         display_DOM("game");
+
+        let nbCards = getNbCards(nbPlayers);
+
+        initBoard(nbCards);
+
+        let pick = document.getElementById("pick").lastElementChild;
+        setTimeout(function () {deal(pick, nbCards)}, 2000);
     })
 });

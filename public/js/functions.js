@@ -4,10 +4,26 @@
  ***              useful functions to create the board              ***
  **********************************************************************/
 
-function createHand(nbCard = 7) {
+function getNbCards(nbPlayers) {
+    let nbCards;
+    switch (nbPlayers) {
+        case 2 : nbCards = 7;
+        break;
+        case 3 :
+        case 4 :
+            nbCards = 6;
+        break;
+        default :
+            nbCards = 0;
+            alert("Error : wrong number of player");
+    }
+    return nbCards;
+}
+
+function createHand(nbCards) {
     let hand = document.getElementById("hand");
 
-    for (let i = 0; i < nbCard; i++) {
+    for (let i = 0; i < nbCards; i++) {
         let span = document.createElement("SPAN");
         span.classList.add("card");
         let div = document.createElement("DIV");
@@ -72,10 +88,10 @@ function createPick() {
     }
 }
 
-function initBoard() {
+function initBoard(nbCards) {
     createBase();
     createStack();
-    createHand();
+    createHand(nbCards);
     createPick();
 }
 
@@ -98,28 +114,14 @@ function moveCard(style) {
  ***                  useful functions of the game                  ***
  **********************************************************************/
 
-function shuffle(deck) {
-    let index = deck.length;
-    let randomIndex;
-
-    while (index !== 0) {
-        randomIndex = Math.floor(Math.random() * index);
-        index--;
-        [deck[index], deck[randomIndex]] = [deck[randomIndex], deck[index]];
-    }
-
-    return deck;
-}
-
-function deal(deck, pick, nbCards) {
+function deal(pick, nbCards) {
     const cardSize = "135px 198px";
-    shuffle(deck);
-    //for (let i = 0; i < nbCards; i++) {
+    for (let i = 0; i < nbCards; i++) {
         let card = "10";
         pick.parentNode.classList.add("flip");
         returnCard(pick.firstElementChild.style, cardSize, card);
         moveCard(pick.firstElementChild.style);
-    //}
+    }
 }
 
 /**********************************************************************
