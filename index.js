@@ -120,19 +120,7 @@ function createDeck(nbPlayers, index_room) {
 function getCard(nbPlayers, index_room) {
     let index = Math.floor(Math.random() * games[nbPlayers][index_room]["deck"].length);
     let value = games[nbPlayers][index_room]["deck"][index];
-    return value.toString();
-}
-
-
-/**
- * Get one card from the deck (from remaining cards)
- * @param nbPlayers the number of the players of the room
- * @param index_room the room
- * @returns {string} the number of the card
- */
-function getCard(nbPlayers, index_room) {
-    let index = Math.floor(Math.random() * games[nbPlayers][index_room]["deck"].length);
-    let value = games[nbPlayers][index_room]["deck"][index];
+    games[nbPlayers][index_room]["deck"].splice(index, 1);
     return value.toString();
 }
 
