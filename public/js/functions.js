@@ -111,6 +111,7 @@ function moveCard(card) {
  ***                  useful functions of the game                  ***
  **********************************************************************/
 
+
 function deal(pick, arr) {
     for (let i = 0; i < arr.length; i++, setTimeout(function() {}, 200)) {
         let cardNumber = "2";//arr[i];
