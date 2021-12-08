@@ -94,22 +94,21 @@ function sendPlayers(nbPlayers, index_room) {
 function startGame(nbPlayers, index_room) {
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
     let current = games[nbPlayers][index_room]["current"];
+    let name_beginner = Object.keys(games[nbPlayers][index_room]["players"][current]);
+
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
 
-            console.log("i=" + i);
-            console.log("current=" + current);
-
             if(i === current){
                 games[nbPlayers][index_room]["players"][i][name].emit("start", {
                     numberPlayers : nbPlayers,
-                    youBegin : true,    // i === current possible ??
+                    begin : true,
                 });
             } else {
                 games[nbPlayers][index_room]["players"][i][name].emit("start", {
                     numberPlayers : nbPlayers,
-                    youBegin : false,   // i === current possible ??
+                    begin : name_beginner,
                 });
             }
         }
@@ -197,6 +196,7 @@ io.on('connection', function(socket) {
     let nbPlayersInGame = null;     // the number players planed playing with the player in the room
     let index_room = null;          // the number of the room where the player is playing
     let index_player = null;        // the number of the player in the room
+    let name_player = null;                // the name of the player
 
     /**
      *  Ask for a connection to join a room of the player.
@@ -261,6 +261,7 @@ io.on('connection', function(socket) {
 
         state = 0;
         nbPlayersInGame = nbPlayers;
+        name_player = name;
         games[nbPlayers][index_room]["players"][index_player] = {
             [name] : socket,
         };
@@ -303,6 +304,7 @@ io.on('connection', function(socket) {
         nbPlayersInGame = nbPlayers;
         index_player = 0; //first in the room
         nbRooms[nbPlayers]++;
+        name_player = name;
 
         games[nbPlayers][index_room] = {
             visibility : visibility,    // PUBLIC or the name of the room
@@ -446,7 +448,7 @@ io.on('connection', function(socket) {
 
                 let name = Object.keys(games[nbPlayersInGame][index_room]["players"][i])[0];
                 games[nbPlayersInGame][index_room]["players"][i][name].emit("message", {
-                    author : false,
+                    author : name_player,
                     message : msg,
                 });
             }
@@ -462,8 +464,8 @@ io.on('connection', function(socket) {
         if(state === 0) {
             // room isn't yet playing
 
-            let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
-            console.log("Player " + name + " logged out");
+            //let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
+            console.log("Player " + name_player + " logged out");
 
             sendPlayers(nbPlayersInGame, index_room);
             removePlayer(nbPlayersInGame, index_room, index_player);
@@ -472,14 +474,13 @@ io.on('connection', function(socket) {
         if(state === 1) {
             // game in progress
 
-            let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
-            console.log("End of the game, " + name + " has left");
+            //let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
+            console.log("End of the game, " + name_player + " has left");
 
             removeRoom(nbPlayersInGame, index_room);
         }
 
         state = -1;
-
     });
 
 });

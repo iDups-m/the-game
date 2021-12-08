@@ -48,10 +48,6 @@ document.addEventListener("DOMContentLoaded", function() {
         refreshTablePlayers(players);
     });
 
-    sock.on("debug", function(games) {
-        console.log(games);
-    });
-
     sock.on("error_join", function(msg) {
         alert("Not possible to join the room. " + msg);
         location.reload();
@@ -72,11 +68,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
         sock.emit("getHand", nbCards);
 
-        alert("A toi de jouer : " + info.youBegin);
+        if(info.begin === true){
+            alert("You begin");
+        } else {
+            alert(info.begin + " begin");
+        }
+
+
     });
 
     sock.on("hand", function(arr) {
         let pick = document.getElementById("pick").lastElementChild;
         setTimeout(function() {deal(pick, arr)}, 1000);
+    });
+
+
+
+
+
+
+    sock.on("debug", function(games) {
+        console.log(games);
     });
 });
