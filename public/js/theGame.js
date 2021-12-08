@@ -77,6 +77,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     sock.on("hand", function(arr) {
         let pick = document.getElementById("pick").lastElementChild;
-        setTimeout(function () {deal(pick, arr)}, 2000);
+        setTimeout(function() {deal(pick, arr)}, 1000);
     });
 });

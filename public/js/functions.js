@@ -4,32 +4,19 @@
  ***              useful functions to create the board              ***
  **********************************************************************/
 
-function getNbCards(nbPlayers) {
-    let nbCards;
-    switch (parseInt(nbPlayers)) {
-        case 2 :
-            nbCards = 7;
-        break;
-        case 3 :
-        case 4 :
-            nbCards = 6;
-        break;
-        default :
-            nbCards = 0;
-            alert("Error : wrong number of players");
-    }
-    return nbCards;
-}
-
 function createHand(nbCards) {
     let hand = document.getElementById("hand");
 
     for (let i = 0; i < nbCards; i++) {
         let span = document.createElement("SPAN");
         span.classList.add("card");
-        let div = document.createElement("DIV");
-        div.classList.add("faceCard", "hand");
-        span.appendChild(div);
+        span.id = i.toString();
+        let divFront = document.createElement("DIV");
+        divFront.classList.add("faceCard", "handFront");
+        span.appendChild(divFront);
+        let divBack = document.createElement("DIV");
+        divBack.classList.add("faceCard", "handBack");
+        span.appendChild(divBack);
         hand.appendChild(span);
     }
 }
@@ -78,12 +65,8 @@ function createPick() {
         let span = document.createElement("SPAN");
         span.classList.add("card");
         let divFront = document.createElement("DIV");
-        divFront.classList.add("face", "pickFront");
-        divFront.style.backgroundImage = "url(\"./pictures/pick.jpg\")";
+        divFront.classList.add("face", "pick");
         span.appendChild(divFront);
-        let divBack = document.createElement("DIV");
-        divBack.classList.add("face", "pickBack");
-        span.appendChild(divBack);
         span.style.marginRight = margin+"px";
         margin += 1;
         pick.appendChild(span);
@@ -97,28 +80,42 @@ function initBoard(nbCards) {
     createPick();
 }
 
-function flipCard(card, cardNumber) {
-    card.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+cardNumber+".jpg')";
-    card.classList.add("flip");
-}
-
-function moveCard(card) {
-    card.style.transform = "translate(100px, 500px)";
-    card.style.transition = "all 1s ease-in-out";
-}
-
 /**********************************************************************
  ***                  useful functions of the game                  ***
  **********************************************************************/
 
+function getNbCards(nbPlayers) {
+    let nbCards;
+    switch (parseInt(nbPlayers)) {
+        case 2 :
+            nbCards = 7;
+            break;
+        case 3 :
+        case 4 :
+            nbCards = 6;
+            break;
+        default :
+            nbCards = 0;
+            alert("Error : wrong number of players");
+    }
+    return nbCards;
+}
+
+function flipHand(card, cardNumber) {
+    card.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+cardNumber+".jpg')";
+    card.classList.add("flip");
+}
 
 function deal(pick, arr) {
-    for (let i = 0; i < arr.length; i++, setTimeout(function() {}, 200)) {
-        let cardNumber = "2";//arr[i];
-        let clone = pick.cloneNode(true);
-        pick.after(clone);
-        flipCard(clone, cardNumber);
-        setTimeout(function () {moveCard(clone)}, 400);
+    for (let i = 0; i < arr.length; i++) {
+        let handCard = document.getElementById(i.toString());
+        handCard.firstElementChild.style.backgroundImage = "url('./pictures/pick.jpg')";
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+        let handCard = document.getElementById(i.toString());
+        let cardNumber = arr[i];
+        setTimeout(function() {flipHand(handCard, cardNumber)}, 1000);
     }
 }
 

@@ -237,36 +237,38 @@ blockquote:before, blockquote:after {
     background: white;
     z-index: 10;
 }
-.card .hand {
+.card .handFront {
     background: white;
-    z-index: 10;
-}
-.card .pickFront {
-    background-size: 135px 198px;
-    transform: rotateY(0deg);
-    transition: all .4s ease-in-out;
+    background-size: 98px 150px;
+    /*transform: rotateY(180deg);
+    transition: all .4s ease-in-out;*/
     backface-visibility: visible;
     z-index: 10;
 }
-.card .pickBack {
-    background-size: 135px 198px;
-    transform: rotateY(180deg);
+.card .handBack {
+    background-size:98px 150px;
+    /*transform: rotateY(0deg);
     transform-style: preserve-3d;
-    transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;*/
     backface-visibility: hidden;
     z-index: 5;
 }
-.card.flip .pickFront {
+.card .pick {
+    background-image: url("../pictures/pick.jpg");
+    background-size: 135px 198px;
+    z-index: 10;
+}
+.card.flip .handFront {
     transform: rotateY(180deg);
     transform-style: preserve-3d;
-    transition: all .4s ease-in-out;
+    transition: all 0.8s ease-in-out;
     backface-visibility: hidden;
     z-index: 900;
 }
-.card.flip .pickBack {
+.card.flip .handBack {
     transform: rotateY(0deg);
     transform-style: preserve-3d;
-    transition: all .4s ease-in-out;
+    transition: all .8s ease-in-out;
     backface-visibility: visible;
     z-index: 1000;
 }
@@ -304,33 +306,26 @@ blockquote:before, blockquote:after {
 #hand > span:nth-child(1) {
     padding-top: 20px;
     transform: rotateZ(-20deg);
-    animation: drop1 .5s ease-in;
 }
 #hand > span:nth-child(2) {
     padding-top: 5px;
     transform: rotateZ(-10deg);
-    animation: drop2 .5s ease-in;
 }
 #hand > span:nth-child(3) {
     transform: rotateZ(-5deg);
-    animation: drop3 .5s ease-in;
 }
 #hand > span:nth-child(4) {
     transform: rotateZ(0deg);
-    animation: drop4 .5s ease-in;
 }
 #hand > span:nth-child(5) {
     transform: rotateZ(5deg);
-    animation: drop5 .5s ease-in;
 }
 #hand > span:nth-child(6) {
     transform: rotateZ(10deg);
-    animation: drop6 .5s ease-in;
 }
 #hand > span:nth-child(7) {
     padding-top: 10px;
     transform: rotateZ(15deg);
-    animation: drop7 .5s ease-in;
 }
 #chat {
     border: 3px solid #333;
