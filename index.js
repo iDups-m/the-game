@@ -342,6 +342,7 @@ io.on('connection', function(socket) {
             nbPlayers : nbPlayersInGame,
             visibility : visibility,
         });
+
     });
 
     /**
