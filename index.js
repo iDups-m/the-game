@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
 });
 
 let MIN_CARD = 2;
-let MAX_CARD = 50; //TODO : set to 99 when every cards created
+let MAX_CARD = 99;
 
 /***************************************************************
                 handle client and the game
@@ -249,14 +249,29 @@ io.on('connection', function(socket) {
                 }
             }
             if(names.includes(name)){
-                socket.emit("error_join", "A player with this name is already connected.");
-                return;
+                //socket.emit("error_join", "A player with this name is already connected.");
+                //return;
 
-                //TODO : creation of a room...
+                // Creation of a new room
+                index_player = 0;
+                index_room = nbRooms[nbPlayers];
+                games[nbPlayers][index_room] = {
+                    visibility : visibility,    // PUBLIC or the name of the room
+                    current : -1,               // player whose turn to play
+                    players : {},               // all players
+                    deck : [],                  // Deck of the game (remaining cards)
+                    heaps : {                   // Value on top of the four heap
+                        0 : null,               // increasing heap
+                        1 : null,               //      "
+                        2 : null,               // decreasing heap
+                        3 : null,               //      "
+                    },
+                };
+                nbRooms[nbPlayers]++;
+            } else {
+                index_room = roomFree;
+                index_player = names.length; //TODO: à vérifier en cas de suppression de joueur
             }
-
-            index_room = roomFree;
-            index_player = names.length; //TODO: à vérifier en cas de suppression de joueur
         }
 
         state = 0;
