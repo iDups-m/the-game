@@ -107,7 +107,7 @@ function flipHand(card, cardNumber) {
     card.classList.add("flip");
 }
 
-function deal(pick, arr) {
+function deal(arr) {
     for (let i = 0; i < arr.length; i++) {
         let handCard = document.getElementById(i.toString());
         handCard.firstElementChild.style.backgroundImage = "url('./pictures/pick.jpg')";
@@ -145,6 +145,16 @@ function updateStack(heaps) {
         if (card) {
             card.classList.remove("flip");
             card.firstElementChild.style.background = "white";
+        }
+    }
+}
+
+function refillHand(arr, nbHandCards) {
+    for (let i = 0; i < nbHandCards; i++) {
+        let handCard = document.getElementById(i.toString());
+        if (!handCard.classList.contains("flip")) {
+            handCard.firstElementChild.style.backgroundImage = "url('./pictures/cards/"+arr[i]+".jpg')";
+            handCard.classList.add("flip");
         }
     }
 }

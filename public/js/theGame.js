@@ -57,18 +57,20 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
     });
 
+    let nbCards;
+
     sock.on("start", function (info) {
         hide_DOM("h1_welcome");
         hide_DOM("welcome");
         display_DOM("game");
 
-        let nbCards = getNbCards(info.numberPlayers);
+        nbCards = getNbCards(info.numberPlayers);
 
         initBoard(nbCards);
 
         sock.emit("getHand", nbCards, true);
 
-        if(info.begin === true){
+        if(info.begin === true) {
             alert("You begin");
         } else {
             alert(info.begin + " begin");
@@ -76,8 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("hand", function(arr) {
-        let pick = document.getElementById("pick").lastElementChild;
-        setTimeout(function() {deal(pick, arr)}, 1000);
+        setTimeout(function() {deal(arr)}, 1000);
     });
 
     let heap;
@@ -102,10 +103,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    sock.on("newHand", function(arr) {
-        alert("Au boulot Pierrot :)");
-    });
-
     let stack = document.getElementById("stack");
     stack.addEventListener("click", function(e) {
         let span = e.target.parentNode;
@@ -116,6 +113,16 @@ document.addEventListener("DOMContentLoaded", function() {
             heap = undefined;
             value = undefined;
         }
+    });
+
+    let pick = document.getElementById("pick");
+    pick.addEventListener("click", function() {
+        let nbNewCards = nbCards - document.getElementsByClassName("flip").length;
+        sock.emit("getHand", nbNewCards, false);
+    });
+
+    sock.on("newHand", function(arr) {
+        refillHand(arr, nbCards);
     });
 
     sock.on("debug", function(games) {
