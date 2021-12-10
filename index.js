@@ -197,6 +197,7 @@ io.on('connection', function(socket) {
     let index_room = null;          // the number of the room where the player is playing
     let index_player = null;        // the number of the player in the room
     let name_player = null;         // the name of the player
+    let nbCardsPlayed = 0;          // to verify minimum cards played at each turn
 
     /**
      *  Ask for a connection to join a room of the player.
@@ -350,16 +351,29 @@ io.on('connection', function(socket) {
      * Ask for random cards from the deck for the head of the player
      * Call at the beginning of the game and when player has played
      * @param nbCards number of cards wanted
+     * @param first true if getHand (begin of game), false if called after playing
      * Give minimum of cards between wanted cards and remaining cards in deck
      */
-    socket.on("getHand", function(nbCards) {
+    socket.on("getHand", function(nbCards, first) {
         if(games[nbPlayersInGame][index_room]["deck"] == null){
             socket.emit("error", "No deck, no game.");
             return;
         }
-        if(games[nbPlayersInGame][index_room]["deck"].length === 0){
+        let lengthDeck = games[nbPlayersInGame][index_room]["deck"].length;
+        if(lengthDeck === 0){
             socket.emit("error", "Empty deck.");
             return;
+        }
+
+        if(!first) {
+            if ((lengthDeck === 0) && (nbCardsPlayed < 1)) {
+                socket.emit("error", "You must put at least one card.");
+                return;
+            }
+            if ((lengthDeck > 0) && (nbCardsPlayed < 2)) {
+                socket.emit("error", "You must put at least two cards.");
+                return;
+            }
         }
 
         let cards = [];
@@ -371,7 +385,11 @@ io.on('connection', function(socket) {
             }
         }
 
-        socket.emit("hand", cards);
+        if(first) {
+            socket.emit("hand", cards);
+        } else {
+            socket.emit("newHand", cards);
+        }
     });
 
 
@@ -404,7 +422,6 @@ io.on('connection', function(socket) {
             return;
         }
 
-
         let oldValue = games[nbPlayersInGame][index_room]["heaps"][heap];
         console.log("oldValue=" + oldValue);
         if(oldValue !== null) {
@@ -424,16 +441,9 @@ io.on('connection', function(socket) {
         }
 
         // send to players new state of game
-        games[nbPlayersInGame][index_room]["heaps"][heap] =  value;
+        games[nbPlayersInGame][index_room]["heaps"][heap] = value;
         updateGame(nbPlayersInGame, index_room);
-
-        // TODO     marquer que le joueur à jouer car il faut qu'a chaque tour il pose au moins deux cartes
-        // TODO     sauf si deck vide, dans ce cas une seule carte suffit
-        // TODO     tant qu'il veut/peut le joueur dépose des cartes, par contre il doit piocher autant de cartes que déposés
-        // TODO     possibilité : incrémenter un compteur pour le dépot, décrémenter quand il pioche. Doit atteindre 2 (/ 1)
-        // TODO     et bloque la partie tant qu'il ne redescendant pas à 0.
-        // TODO     une fois à 0 : current change et celui qui doit jouer est prévenu
-
+        ++nbCardsPlayed;
     });
 
 
@@ -467,6 +477,7 @@ io.on('connection', function(socket) {
      */
     socket.on("disconnect", function() {
 
+        /*
         if(state === 0) {
             //let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
             console.log("Player " + name_player + " logged out");
@@ -483,8 +494,19 @@ io.on('connection', function(socket) {
 
             removeRoom(nbPlayersInGame, index_room);
         }
+         */
 
-        state = -1;
+        if(state !== -1) {
+            console.log("Player " + name_player + " logged out");
+
+            state = -1;
+            nbPlayersInGame = null;
+            index_room = null;
+            index_player = null;
+            name_player = null;
+            nbCardsPlayed = 0;
+        }
+
     });
 
 });

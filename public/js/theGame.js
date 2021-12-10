@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         initBoard(nbCards);
 
-        sock.emit("getHand", nbCards);
+        sock.emit("getHand", nbCards, true);
 
         if(info.begin === true){
             alert("You begin");
@@ -100,6 +100,10 @@ document.addEventListener("DOMContentLoaded", function() {
             heap = undefined;
             value = undefined;
         }
+    });
+
+    sock.on("newHand", function(arr) {
+        alert("Au boulot Pierrot :)");
     });
 
     let stack = document.getElementById("stack");
