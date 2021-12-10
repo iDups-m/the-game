@@ -181,6 +181,35 @@ function warnEmptyDeck(nbPlayers, index_room) {
     }
 }
 
+/**
+ * Set next current player
+ * @param nbPlayers the number of the players of the room
+ * @param index_room the room
+ */
+function nextCurrentPlayer(nbPlayers, index_room){
+    let current = games[nbPlayers][index_room]["current"];
+    games[nbPlayers][index_room]["current"] = (current+1 % nbPlayers);
+    current = games[nbPlayers][index_room]["current"];
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    let name_beginner = Object.keys(games[nbPlayers][index_room]["players"][current]);
+
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+
+            if(i === current){
+                games[nbPlayers][index_room]["players"][i][name].emit("nextCurrent", {
+                    begin : true,
+                });
+            } else {
+                games[nbPlayers][index_room]["players"][i][name].emit("nextCurrent", {
+                    begin : name_beginner,
+                });
+            }
+        }
+    }
+}
+
 
 /**********************************************************************
  ***                              websocket                         ***
@@ -389,6 +418,10 @@ io.on('connection', function(socket) {
             socket.emit("hand", cards);
         } else {
             socket.emit("newHand", cards);
+
+            // change current player
+            nbCardsPlayed = 0;
+            nextCurrentPlayer(nbPlayersInGame, index_room);
         }
     });
 
