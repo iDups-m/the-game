@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let hand = document.getElementById("hand");
     hand.addEventListener("click", function(e) {
         let span = e.target.parentNode;
+
         if (span.classList.contains("flip")) {
             value = e.target.style.backgroundImage.substr(22, 2);
             value = parseInt(value);
