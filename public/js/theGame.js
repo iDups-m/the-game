@@ -73,8 +73,6 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             alert(info.begin + " begin");
         }
-
-
     });
 
     sock.on("hand", function(arr) {
@@ -82,12 +80,40 @@ document.addEventListener("DOMContentLoaded", function() {
         setTimeout(function() {deal(pick, arr)}, 1000);
     });
 
+    let heap;
+    let value;
 
+    let hand = document.getElementById("hand");
+    hand.addEventListener("click", function(e) {
+        let span = e.target.parentNode;
+        if (span.classList.contains("flip")) {
+            value = e.target.style.backgroundImage.substr(22, 2);
+            value = parseInt(value);
+            if (!Number.isInteger(value)) {
+                value = value.charAt(0);
+            }
+        }
 
+        if (heap && value) {
+            sock.emit("play", heap, value);
+        }
+    });
 
+    let stack = document.getElementById("stack");
+    stack.addEventListener("click", function(e) {
+        let span = e.target.parentNode;
+        heap = span.id.charAt(6);
 
+        if (heap && value) {
+            sock.emit("play", heap, value);
+        }
+    });
 
     sock.on("debug", function(games) {
         console.log(games);
+    });
+
+    sock.on("updateGame", function(heaps) {
+        console.log(heaps);
     });
 });

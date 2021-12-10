@@ -49,6 +49,7 @@ function createStack() {
     for (let i = 0; i < 4; i++) {
         let span = document.createElement("SPAN");
         span.classList.add("card");
+        span.id = "stack-"+i.toString();
         let div = document.createElement("DIV");
         div.classList.add("face", "stack");
         span.appendChild(div);
