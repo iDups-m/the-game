@@ -192,11 +192,11 @@ io.on('connection', function(socket) {
     // debug message
     console.log("player connected");
 
-    let state = -1;                  // -1 : not connected, 0 : connected, 1 : playing
+    let state = -1;                  // -1 : not connected, 0 : connected (, 1 : playing -> not for the moment)
     let nbPlayersInGame = null;     // the number players planed playing with the player in the room
     let index_room = null;          // the number of the room where the player is playing
     let index_player = null;        // the number of the player in the room
-    let name_player = null;                // the name of the player
+    let name_player = null;         // the name of the player
 
     /**
      *  Ask for a connection to join a room of the player.
@@ -398,7 +398,7 @@ io.on('connection', function(socket) {
         console.log("heap=" + heap + " - value=" + value);
 
         // error : not connected player or game not started
-        if (state !== 1 || !games[nbPlayersInGame][index_room] || Object.keys(games[nbPlayersInGame][index_room]["players"]).length !== nbPlayersInGame) {
+        if (state === -1 || !games[nbPlayersInGame][index_room] || Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame) {
             socket.emit("error", "No game in progress.");
             return;
         }
