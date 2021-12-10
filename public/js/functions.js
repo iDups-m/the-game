@@ -120,6 +120,14 @@ function deal(pick, arr) {
     }
 }
 
+function updateStack(heaps) {
+    for (let i = 0; i < 4; i++) {
+        let stack = document.getElementById("stack-"+i);
+        stack.firstElementChild.style.backgroundImage = "url('./pictures/cards/"+heaps[i]+".jpg')";
+        stack.firstElementChild.style.backgroundSize = "135px 198px";
+    }
+}
+
 /**********************************************************************
  ***          useful functions to connect with the server           ***
  **********************************************************************/

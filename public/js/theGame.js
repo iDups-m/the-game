@@ -114,6 +114,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("updateGame", function(heaps) {
-        console.log(heaps);
+        updateStack(heaps);
     });
 });
