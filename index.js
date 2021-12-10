@@ -345,46 +345,33 @@ io.on('connection', function(socket) {
 
     });
 
+
     /**
-     * Ask for random cards from the deck for the head
-     * Only call at the beginning of the game
-     * @param nbCards number of cards in the hand, depend of the number of players
+     * Ask for random cards from the deck for the head of the player
+     * Call at the beginning of the game and when player has played
+     * @param nbCards number of cards wanted
+     * Give minimum of cards between wanted cards and remaining cards in deck
      */
     socket.on("getHand", function(nbCards) {
         if(games[nbPlayersInGame][index_room]["deck"] == null){
             socket.emit("error", "No deck, no game.");
             return;
         }
-        if(games[nbPlayersInGame][index_room]["deck"].length < nbCards){
+        if(games[nbPlayersInGame][index_room]["deck"].length === 0){
             socket.emit("error", "Empty deck.");
+            return;
         }
 
         let cards = [];
         for(let i=0; i<nbCards; ++i){
             cards.push(getCard(nbPlayersInGame, index_room));
+            if(games[nbPlayersInGame][index_room]["deck"].length === 0){
+                warnEmptyDeck(nbPlayersInGame, index_room);
+                break;
+            }
         }
 
         socket.emit("hand", cards);
-    });
-
-
-    /**
-     * Ask for one random card from the deck
-     */
-    socket.on("getCard", function() {
-        if(games[nbPlayersInGame][index_room]["deck"] == null){
-            socket.emit("error", "No deck, no game.");
-            return;
-        }
-
-        if(games[nbPlayersInGame][index_room]["deck"].length === 0){
-            socket.emit("error", "Empty deck.");
-        }
-
-        socket.emit("newCard", getCard(nbPlayersInGame, index_room));
-        if(games[nbPlayersInGame][index_room]["deck"].length === 0){
-            warnEmptyDeck(nbPlayersInGame, index_room);
-        }
     });
 
 
@@ -419,16 +406,19 @@ io.on('connection', function(socket) {
 
 
         let oldValue = games[nbPlayersInGame][index_room]["heaps"][heap];
+        console.log("oldValue=" + oldValue);
         if(oldValue !== null) {
             if (heap < 2) {
                 // increasing heap, new card must be bigger than the card on top of the heap or have 10 points less
-                if ((oldValue < value) && (oldValue - 10 !== value)) {
+                if ((oldValue > value) && (oldValue - 10 !== value)) {
                     socket.emit("error", "The new card must be bigger than that on top of the heap " + heap);
+                    return;
                 }
             } else {
                 // decreasing heap, new card must be smaller than the card on top of the heap or have 10 points more
-                if ((oldValue > value) && (oldValue + 10 !== value)) {
+                if ((oldValue < value) && (oldValue + 10 !== value)) {
                     socket.emit("error", "The new card must be smaller than that on top of the heap " + heap);
+                    return;
                 }
             }
         }
@@ -478,8 +468,6 @@ io.on('connection', function(socket) {
     socket.on("disconnect", function() {
 
         if(state === 0) {
-            // room isn't yet playing
-
             //let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
             console.log("Player " + name_player + " logged out");
 
