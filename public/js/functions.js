@@ -120,11 +120,32 @@ function deal(pick, arr) {
     }
 }
 
+function getHandCard(value) {
+    let hand = document.getElementsByClassName("flip");
+    for (let i = 0; i < hand.length; i++) {
+        let ret = hand[i].lastElementChild.style.backgroundImage.substr(22, 2);
+        ret = parseInt(ret);
+        if (!Number.isInteger(ret)) {
+            ret = ret.charAt(0);
+        }
+        if (ret === value) {
+            return hand[i];
+        }
+    }
+    return null;
+}
+
 function updateStack(heaps) {
     for (let i = 0; i < 4; i++) {
         let stack = document.getElementById("stack-"+i);
         stack.firstElementChild.style.backgroundImage = "url('./pictures/cards/"+heaps[i]+".jpg')";
         stack.firstElementChild.style.backgroundSize = "135px 198px";
+
+        let card = getHandCard(heaps[i]);
+        if (card) {
+            card.classList.remove("flip");
+            card.firstElementChild.style.background = "white";
+        }
     }
 }
 

@@ -97,6 +97,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (heap && value) {
             sock.emit("play", heap, value);
+            heap = undefined;
+            value = undefined;
         }
     });
 
@@ -107,6 +109,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (heap && value) {
             sock.emit("play", heap, value);
+            heap = undefined;
+            value = undefined;
         }
     });
 
