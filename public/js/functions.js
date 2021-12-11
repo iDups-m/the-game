@@ -138,23 +138,26 @@ function getHandCard(value) {
 function updateStack(heaps) {
     for (let i = 0; i < 4; i++) {
         let stack = document.getElementById("stack-"+i);
-        stack.firstElementChild.style.backgroundImage = "url('./pictures/cards/"+heaps[i]+".jpg')";
-        stack.firstElementChild.style.backgroundSize = "135px 198px";
+        stack.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+heaps[i]+".jpg')";
+        stack.lastElementChild.style.backgroundSize = "135px 198px";
 
         let card = getHandCard(heaps[i]);
         if (card) {
             card.classList.remove("flip");
+            card.lastElementChild.style.backgroundImage = "none";
             card.firstElementChild.style.background = "white";
         }
     }
 }
 
 function refillHand(arr, nbHandCards) {
+    let index = 0;
     for (let i = 0; i < nbHandCards; i++) {
         let handCard = document.getElementById(i.toString());
         if (!handCard.classList.contains("flip")) {
-            handCard.firstElementChild.style.backgroundImage = "url('./pictures/cards/"+arr[i]+".jpg')";
+            handCard.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+arr[index]+".jpg')";
             handCard.classList.add("flip");
+            index++;
         }
     }
 }
