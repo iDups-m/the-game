@@ -188,8 +188,9 @@ function warnEmptyDeck(nbPlayers, index_room) {
  */
 function nextCurrentPlayer(nbPlayers, index_room){
     let current = games[nbPlayers][index_room]["current"];
-    games[nbPlayers][index_room]["current"] = (current+1 % nbPlayers);
-    current = games[nbPlayers][index_room]["current"];
+    current = (current+1) % nbPlayers;
+    games[nbPlayers][index_room]["current"] = current;
+
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
     let name_beginner = Object.keys(games[nbPlayers][index_room]["players"][current]);
 
@@ -221,7 +222,7 @@ io.on('connection', function(socket) {
     // debug message
     console.log("player connected");
 
-    let state = -1;                  // -1 : not connected, 0 : connected (, 1 : playing -> not for the moment)
+    let state = -1;                 // -1 : not connected, 0 : connected
     let nbPlayersInGame = null;     // the number players planed playing with the player in the room
     let index_room = null;          // the number of the room where the player is playing
     let index_player = null;        // the number of the player in the room
@@ -384,6 +385,19 @@ io.on('connection', function(socket) {
      * Give minimum of cards between wanted cards and remaining cards in deck
      */
     socket.on("getHand", function(nbCards, first) {
+        socket.emit("debug", games[nbPlayersInGame][index_room]["deck"]);
+
+        // error : not connected player or game not started
+        if (state === -1 || !games[nbPlayersInGame][index_room] || Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame) {
+            socket.emit("error", "No game in progress.");
+            return;
+        }
+        // not for the player to play
+        if( !first && (index_player !== games[nbPlayersInGame][index_room]["current"]) ) {
+            socket.emit("error", "It's not your turn.");
+            return;
+        }
+
         if(games[nbPlayersInGame][index_room]["deck"] == null){
             socket.emit("error", "No deck, no game.");
             return;
@@ -456,7 +470,7 @@ io.on('connection', function(socket) {
         }
 
         let oldValue = games[nbPlayersInGame][index_room]["heaps"][heap];
-        console.log("oldValue=" + oldValue);
+        //console.log("oldValue=" + oldValue);
         if(oldValue !== null) {
             if (heap < 2) {
                 // increasing heap, new card must be bigger than the card on top of the heap or have 10 points less
@@ -510,25 +524,6 @@ io.on('connection', function(socket) {
      */
     socket.on("disconnect", function() {
 
-        /*
-        if(state === 0) {
-            //let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
-            console.log("Player " + name_player + " logged out");
-
-            sendPlayers(nbPlayersInGame, index_room);
-            removePlayer(nbPlayersInGame, index_room, index_player);
-        }
-
-        if(state === 1) {
-            // game in progress
-
-            //let name = Object.keys(games[nbPlayersInGame][index_room]["players"][index_player]);
-            console.log("End of the game, " + name_player + " has left");
-
-            removeRoom(nbPlayersInGame, index_room);
-        }
-         */
-
         if(state !== -1) {
             console.log("Player " + name_player + " logged out");
 
@@ -538,6 +533,19 @@ io.on('connection', function(socket) {
             index_player = null;
             name_player = null;
             nbCardsPlayed = 0;
+
+            console.log("nbPlayersInGame=" + nbPlayersInGame);
+            console.log("index_room=" + index_room);
+            if(Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame){
+                // room not already playing
+                removePlayer(nbPlayersInGame, index_room, index_player);
+                sendPlayers(nbPlayersInGame, index_room);
+            } else {
+                // remove playing room
+                console.log("End of the game, " + name_player + " has left");
+                removeRoom(nbPlayersInGame, index_room);
+            }
+
         }
 
     });
