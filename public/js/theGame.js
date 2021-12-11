@@ -125,11 +125,25 @@ document.addEventListener("DOMContentLoaded", function() {
         refillHand(arr, nbCards);
     });
 
-    sock.on("debug", function(games) {
-        console.log(games);
-    });
-
     sock.on("updateGame", function(heaps) {
         updateStack(heaps);
+    });
+
+    sock.on("nextCurrent", function(info) {
+        if(info.begin === true) {
+            alert("You continue");
+        } else {
+            alert(info.begin + " continue");
+        }
+    });
+
+
+
+
+
+
+
+    sock.on("debug", function(games) {
+        console.log(games);
     });
 });
