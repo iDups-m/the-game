@@ -112,12 +112,12 @@ function startGame(nbPlayers, index_room) {
             if(i === current){
                 games[nbPlayers][index_room]["players"][i][name].emit("start", {
                     numberPlayers : nbPlayers,
-                    begin : true,
+                    author : true,
                 });
             } else {
                 games[nbPlayers][index_room]["players"][i][name].emit("start", {
                     numberPlayers : nbPlayers,
-                    begin : name_beginner,
+                    author : name_beginner,
                 });
             }
         }
@@ -209,11 +209,11 @@ function nextCurrentPlayer(nbPlayers, index_room){
 
             if(i === current){
                 games[nbPlayers][index_room]["players"][i][name].emit("nextCurrent", {
-                    begin : true,
+                    author : true,
                 });
             } else {
                 games[nbPlayers][index_room]["players"][i][name].emit("nextCurrent", {
-                    begin : name_beginner,
+                    author : name_beginner,
                 });
             }
         }
@@ -483,16 +483,17 @@ io.on('connection', function(socket) {
         let oldValue = games[nbPlayersInGame][index_room]["heaps"][heap];
         //console.log("oldValue=" + oldValue);
         if(oldValue !== null) {
+            let theHeap = Number(heap) + 1;
             if (heap < 2) {
                 // increasing heap, new card must be bigger than the card on top of the heap or have 10 points less
                 if ((oldValue > value) && (oldValue - 10 !== value)) {
-                    socket.emit("error", "The new card must be bigger than that on top of the heap " + heap);
+                    socket.emit("error", "The new card must be bigger than that on top of the heap " + theHeap);
                     return;
                 }
             } else {
                 // decreasing heap, new card must be smaller than the card on top of the heap or have 10 points more
                 if ((oldValue < value) && (oldValue + 10 !== value)) {
-                    socket.emit("error", "The new card must be smaller than that on top of the heap " + heap);
+                    socket.emit("error", "The new card must be smaller than that on top of the heap " + theHeap);
                     return;
                 }
             }
