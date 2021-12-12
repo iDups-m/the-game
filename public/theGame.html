@@ -61,8 +61,31 @@
                 </div>
                 <div class="board hand-position" id="hand">
                 </div>
-                <div class="chat-position" id="chat">
-                </div>
+                <aside class="chat-position" id="chat">
+                    <!-- message here -->
+                    <footer>
+                        <div id="navbar">
+                            <div class="select">
+                                <select id="selectMessage" name="message">
+                                    <option>message</option>
+                                    <option value="Don't touch the heap">Don't touch the heap</option>
+                                    <option value="Slow down on the heap">Slow down on the heap</option>
+                                    <option value="Can't do anything on the heap">Can't do anything on the heap</option>
+                                </select>
+                            </div>
+                            <div class="select">
+                                <select id="selectHeap" name="heap">
+                                    <option>heap</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </div>
+                            <input type="button" id="btnSend" value="send">
+                        </div>
+                    </footer>
+                </aside>
             </div>
         </main>
     </body>

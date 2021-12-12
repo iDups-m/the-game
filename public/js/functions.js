@@ -163,6 +163,71 @@ function refillHand(arr, nbHandCards) {
 }
 
 /**********************************************************************
+ ***          useful functions for the chat of the game             ***
+ **********************************************************************/
+
+/**
+ * create the timestamp who's on all messages
+ * @returns {string} a string representative of the timestamp
+ */
+function timestamp() {
+    let time = new Date(Date.now());
+    let res = "";
+
+    if (time.getHours() < 10) {
+        res += "0";
+    }
+    let hours = time.getHours();
+    res += hours+":";
+
+    if (time.getMinutes() < 10) {
+        res += "0";
+    }
+    res += time.getMinutes()+":";
+
+    if (time.getSeconds() < 10) {
+        res += "0";
+    }
+    res += time.getSeconds();
+
+    return res;
+}
+
+/**
+ * display the message with the right settings
+ * @param obj the structure that return the server
+ * @param messageType know the type of the message :
+ * - 0 (server message)
+ * - 1 (player message)
+ */
+function displayMessage(obj, messageType = 0) {
+    let sentence = timestamp();
+
+    sentence += " - ";
+
+    if (messageType === 1) {
+        (obj.author === true) ? sentence += "You" : sentence += obj.author;
+    }
+
+    sentence += " : ";
+
+    if (messageType === 1) {
+        sentence += obj.message;
+    }
+
+    let aside = document.getElementsByTagName("ASIDE")[0];
+    let p = document.createElement("P");
+    p.textContent = sentence;
+    p.style.color = "black";
+
+    if (aside.children.length === 0) {
+        aside.appendChild(p);
+    } else {
+        aside.insertBefore(p, aside.firstChild);
+    }
+}
+
+/**********************************************************************
  ***          useful functions to connect with the server           ***
  **********************************************************************/
 

@@ -57,6 +57,10 @@ document.addEventListener("DOMContentLoaded", function() {
         location.reload();
     });
 
+    sock.on("debug", function(games) {
+        console.log(games);
+    });
+
     let nbCards;
 
     sock.on("start", function (info) {
@@ -70,11 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         sock.emit("getHand", nbCards, true);
 
-        if(info.begin === true) {
-            alert("You begin");
-        } else {
-            alert(info.begin + " begin");
-        }
+        displayMessage(info, 0);
     });
 
     sock.on("hand", function(arr) {
@@ -130,23 +130,31 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("nextCurrent", function(info) {
-        if(info.begin === true) {
-            alert("You continue");
-        } else {
-            alert(info.begin + " continue");
-        }
+        displayMessage(info, 0);
+    });
+
+    let btnSend = document.getElementById("btnSend");
+    btnSend.addEventListener("click", function() {
+        let message, heap;
+
+        message = document.getElementById("selectMessage").value;
+        heap = document.getElementById("selectHeap").value;
+
+        let msg = message+" number "+heap;
+
+        sock.emit("sendMsg", msg);
+    });
+
+    sock.on("message", function(obj) {
+        displayMessage(obj, 1);
+    });
+
+    sock.on("emptyDeck", function() {
+       //TODO : hide the heap and add button to end the turn
     });
 
     sock.on("endGame", function(msg) {
         alert(msg);
         location.reload();
-    });
-
-
-
-
-
-    sock.on("debug", function(games) {
-        console.log(games);
     });
 });
