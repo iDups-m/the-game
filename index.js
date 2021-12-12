@@ -44,6 +44,15 @@ let nbRooms = {
  */
 function removeRoom(nbPlayers, index_room) {
     console.log("Remove the room " + index_room + " of " + nbPlayers + " players");
+
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            games[nbPlayers][index_room]["players"][i][name].emit("endGame", "Game lost, one player has left");
+        }
+    }
+
     delete games[nbPlayers][index_room];
 }
 
@@ -245,10 +254,12 @@ io.on('connection', function(socket) {
         // searching for a room in need of other players
         let roomFree = -1;
         for (let i = 0; i < nbRooms[nbPlayers]; ++i) {
-            let length = Object.keys(games[nbPlayers][i]["players"]).length;
-            if( (games[nbPlayers][i]["visibility"] === visibility) && (length < nbPlayers) ){
-                roomFree = i;
-                break;
+            if(games[nbPlayers][i]) {
+                let length = Object.keys(games[nbPlayers][i]["players"]).length;
+                if ((games[nbPlayers][i]["visibility"] === visibility) && (length < nbPlayers)) {
+                    roomFree = i;
+                    break;
+                }
             }
         }
 
@@ -527,25 +538,24 @@ io.on('connection', function(socket) {
         if(state !== -1) {
             console.log("Player " + name_player + " logged out");
 
+            if(games[nbPlayersInGame][index_room]) {
+                if (Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame) {
+                    // room not already playing
+                    removePlayer(nbPlayersInGame, index_room, index_player);
+                    sendPlayers(nbPlayersInGame, index_room);
+                } else {
+                    // remove playing room
+                    console.log("End of the game, " + name_player + " has left");
+                    removeRoom(nbPlayersInGame, index_room);
+                }
+            }
+
             state = -1;
             nbPlayersInGame = null;
             index_room = null;
             index_player = null;
             name_player = null;
             nbCardsPlayed = 0;
-
-            console.log("nbPlayersInGame=" + nbPlayersInGame);
-            console.log("index_room=" + index_room);
-            if(Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame){
-                // room not already playing
-                removePlayer(nbPlayersInGame, index_room, index_player);
-                sendPlayers(nbPlayersInGame, index_room);
-            } else {
-                // remove playing room
-                console.log("End of the game, " + name_player + " has left");
-                removeRoom(nbPlayersInGame, index_room);
-            }
-
         }
 
     });

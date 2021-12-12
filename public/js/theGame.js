@@ -137,7 +137,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-
+    sock.on("endGame", function(msg) {
+        alert(msg);
+        location.reload();
+    });
 
 
 
