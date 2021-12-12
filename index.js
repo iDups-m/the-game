@@ -452,7 +452,7 @@ io.on('connection', function(socket) {
 
 
     /**
-     * Ask to had a new card on one heap
+     * Client want to play a card (value) on one heap
      * @param heap number of the heap (0/1 -> increasing,   2/3 -> decreasing)
      * @param value value of the card
      */
@@ -502,6 +502,38 @@ io.on('connection', function(socket) {
         games[nbPlayersInGame][index_room]["heaps"][heap] = value;
         updateGame(nbPlayersInGame, index_room);
         ++nbCardsPlayed;
+    });
+
+
+    /**
+     * Client want to finish playing (set next current player)
+     * Only call when empty deck
+     */
+    socket.on("endPlay", function(){
+        // error : not connected player or game not started
+        if (state === -1 || !games[nbPlayersInGame][index_room] || Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame || games[nbPlayersInGame][index_room]["deck"] == null) {
+            socket.emit("error", "No game in progress.");
+            return;
+        }
+        // not for the player to play
+        if (index_player !== games[nbPlayersInGame][index_room]["current"]) {
+            socket.emit("error", "It's not your turn.");
+            return;
+        }
+        // deck not empty
+        if(games[nbPlayersInGame][index_room]["deck"].length !== 0){
+            socket.emit("error", "Empty not deck. You must click on deck to finish playing");
+            return;
+        }
+
+        if(nbCardsPlayed < 1){
+            socket.emit("error", "You must put at least one card.");
+            return;
+        }
+
+        // change current player
+        nbCardsPlayed = 0;
+        nextCurrentPlayer(nbPlayersInGame, index_room);
     });
 
 
