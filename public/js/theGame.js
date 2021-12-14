@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         sock.emit("getHand", nbCards, true);
 
-        displayMessage(info, 0);
+        displayMessage(info, true);
     });
 
     sock.on("hand", function(arr) {
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("nextCurrent", function(info) {
-        displayMessage(info, 0);
+        displayMessage(info, false, true);
     });
 
     let btnSend = document.getElementById("btnSend");
@@ -146,15 +146,40 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("message", function(obj) {
-        displayMessage(obj, 1);
+        displayMessage(obj, false, false, 1);
     });
 
     sock.on("emptyDeck", function() {
-       //TODO : hide the heap and add button to end the turn
+        let pick = document.getElementById("pick");
+        pick.style.visibility = "hidden";
+
+        let endTurnBtn = document.createElement("BUTTON");
+        endTurnBtn.id = "endTurnBtn";
+
+        endTurnBtn.addEventListener("click", function() {
+            //TODO : end the turn
+        });
     });
 
     sock.on("endGame", function(msg) {
         alert(msg);
         location.reload();
     });
+});
+
+document.addEventListener("keypress", function(e) {
+    if (e.key === 'D' && e.shiftKey === true) {
+        let chat = document.getElementsByTagName("ASIDE")[0];
+        let paragraphs = chat.getElementsByTagName("P");
+        chat.classList.toggle("dark");
+        if (chat.classList.contains("dark")) {
+            for (let i = 0; i < paragraphs.length; i++) {
+                paragraphs[i].style.color = "white";
+            }
+        } else {
+            for (let i = 0; i < paragraphs.length; i++) {
+                paragraphs[i].style.color = "black";
+            }
+        }
+    }
 });

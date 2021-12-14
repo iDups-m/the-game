@@ -240,8 +240,6 @@ blockquote:before, blockquote:after {
 .card .handFront {
     background: white;
     background-size: 98px 150px;
-    /*transform: rotateY(180deg);
-    transition: all .4s ease-in-out;*/
     backface-visibility: visible;
     z-index: 10;
 }
@@ -327,10 +325,13 @@ blockquote:before, blockquote:after {
     padding-top: 10px;
     transform: rotateZ(15deg);
 }
-#chat {
+.chat {
     border: 3px solid #333;
     background: #cce5ff;
     opacity: 0.8;
+}
+.dark {
+    background: #00004d;
 }
 select {
     appearance: none;
@@ -379,4 +380,9 @@ select {
     display: inline;
     width: 60px;
     height: 3em;
+}
+#endTurnBtn {
+    position: absolute;
+    top: 80%;
+    left: 10%;
 }

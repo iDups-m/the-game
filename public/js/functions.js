@@ -4,6 +4,10 @@
  ***              useful functions to create the board              ***
  **********************************************************************/
 
+/**
+ * create the hand in the DOM structure
+ * @param nbCards the number of cards to display in the hand of the player
+ */
 function createHand(nbCards) {
     let hand = document.getElementById("hand");
 
@@ -21,6 +25,10 @@ function createHand(nbCards) {
     }
 }
 
+/**
+ * create the base of the game in the DOM structure
+ * it is the four card at the top of the screen
+ */
 function createBase() {
     let base = document.getElementById("base");
 
@@ -43,6 +51,9 @@ function createBase() {
     }
 }
 
+/**
+ * create the stacks of the game in the DOM structure
+ */
 function createStack() {
     let stack = document.getElementById("stack");
 
@@ -57,6 +68,9 @@ function createStack() {
     }
 }
 
+/**
+ * create the pick of the game in the DOM structure
+ */
 function createPick() {
     let pick = document.getElementById("pick");
 
@@ -74,6 +88,10 @@ function createPick() {
     }
 }
 
+/**
+ * initialize the board the game
+ * @param nbCards the number of cards to display in the hand
+ */
 function initBoard(nbCards) {
     createBase();
     createStack();
@@ -85,6 +103,11 @@ function initBoard(nbCards) {
  ***                  useful functions of the game                  ***
  **********************************************************************/
 
+/**
+ * get the number of cards in function of the number of players
+ * @param nbPlayers the number of players in the game
+ * @returns {number} the number of cards
+ */
 function getNbCards(nbPlayers) {
     let nbCards;
     switch (parseInt(nbPlayers)) {
@@ -102,11 +125,21 @@ function getNbCards(nbPlayers) {
     return nbCards;
 }
 
+/**
+ * return a card on the hand
+ * @param card the card to flip
+ * @param cardNumber the number of the card to display
+ */
 function flipHand(card, cardNumber) {
     card.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+cardNumber+".jpg')";
     card.classList.add("flip");
 }
 
+/**
+ * return the cards at the beginning of the game
+ * for all the players
+ * @param arr the array with the value to display on the cards
+ */
 function deal(arr) {
     for (let i = 0; i < arr.length; i++) {
         let handCard = document.getElementById(i.toString());
@@ -120,6 +153,11 @@ function deal(arr) {
     }
 }
 
+/**
+ * get a card on the hand in case of the value of the card
+ * @param value the value of the card
+ * @returns {null|Element} the card or null if the card is not in the hand
+ */
 function getHandCard(value) {
     let hand = document.getElementsByClassName("flip");
     for (let i = 0; i < hand.length; i++) {
@@ -135,6 +173,11 @@ function getHandCard(value) {
     return null;
 }
 
+/**
+ * update the display of the stack/heap on the board of the game
+ * @param heaps the array representation of the heaps
+ * //example => [12, 34, 89, 1]
+ */
 function updateStack(heaps) {
     for (let i = 0; i < 4; i++) {
         let stack = document.getElementById("stack-"+i);
@@ -150,6 +193,11 @@ function updateStack(heaps) {
     }
 }
 
+/**
+ * refill the card in the hand that are empty
+ * @param arr the arr of the new cards
+ * @param nbHandCards the number of card in the hand in total
+ */
 function refillHand(arr, nbHandCards) {
     let index = 0;
     for (let i = 0; i < nbHandCards; i++) {
@@ -199,17 +247,23 @@ function timestamp() {
  * @param messageType know the type of the message :
  * - 0 (server message)
  * - 1 (player message)
+ * @param start true if it displays the start player
+ * @param current the current player to play the turn
  */
-function displayMessage(obj, messageType = 0) {
+function displayMessage(obj, start = false, current = false, messageType = 0) {
     let sentence = timestamp();
 
     sentence += " - ";
 
-    if (messageType === 1) {
-        (obj.author === true) ? sentence += "You" : sentence += obj.author;
-    }
+    (obj.author === true) ? sentence += "You" : sentence += obj.author;
 
-    sentence += " : ";
+    if (start) {
+        sentence += " start the game";
+    } else if (current) {
+        sentence += " next to play";
+    } else {
+        sentence += " : ";
+    }
 
     if (messageType === 1) {
         sentence += obj.message;
