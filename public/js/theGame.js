@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function() {
         endTurnBtn.id = "endTurnBtn";
 
         endTurnBtn.addEventListener("click", function() {
-            //TODO : end the turn
+            sock.emit("endPlay");
         });
     });
 
