@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 let MIN_CARD = 2;
 //let MAX_CARD = 99;
-let MAX_CARD = 50; //TODO: remove
+let MAX_CARD = 22; //TODO: remove
 
 /***************************************************************
                 handle client and the game
@@ -134,11 +134,7 @@ function startGame(nbPlayers, index_room) {
  */
 function createDeck(nbPlayers, index_room) {
     for (let i = MIN_CARD; i < MAX_CARD; i++) {
-        //TODO : supprimer, juste pour debug
-        if(i%2===0){
-            games[nbPlayers][index_room]["deck"].push(i);
-        }
-
+        games[nbPlayers][index_room]["deck"].push(i);
     }
 
     /* Shuffle deck (even if card will be taken randomly) */
@@ -190,7 +186,6 @@ function warnEmptyDeck(nbPlayers, index_room) {
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
-            console.log("EmptyDeck sent to " + name);
             games[nbPlayers][index_room]["players"][i][name].emit("emptyDeck");
         }
     }
@@ -203,8 +198,6 @@ function warnEmptyDeck(nbPlayers, index_room) {
  */
 function nextCurrentPlayer(nbPlayers, index_room){
     let current = games[nbPlayers][index_room]["current"];
-    //current = (current+1) % nbPlayers;
-    //games[nbPlayers][index_room]["current"] = current;
     let index = -1;
     let currentSet = false;
     do {
@@ -214,15 +207,11 @@ function nextCurrentPlayer(nbPlayers, index_room){
             games[nbPlayers][index_room]["current"] = current;
         }
         ++index;
-    } while((currentSet !== true) && (index < nbPlayers-1));
-
+    } while((!currentSet) && (index < nbPlayers));
 
     if(!currentSet){
-        // Game finished, players won !
-        endGame(nbPlayers, index_room, null, "Game won ! Congratulation !", "Game won ! Congratulation !")
-        return;
+        return; //error
     }
-
 
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
     let name_beginner = (Object.keys(games[nbPlayers][index_room]["players"][current]))[0];
@@ -617,15 +606,33 @@ io.on('connection', function(socket) {
      * @param nbCardsLeft number of remaining cards
      */
     socket.on("endGame", function(surrender, nbCardsLeft){
+        console.log("endgame received with " + surrender + " et " + nbCardsLeft);
+
         if(surrender){
             console.log("Player " + name_player + " has surrender");
             endGame(nbPlayersInGame, index_room, name_player, "Game lost, you have given up." , "A player of your team has given up.");
         } else {
             if(nbCardsLeft === 0){
-
-            } else {
-
+                games[nbPlayersInGame][index_room]["players"][index_player].finished = true;
             }
+
+            console.log("games[nbPlayersInGame][index_room][\"players\"][index_player].finished=" + games[nbPlayersInGame][index_room]["players"][index_player].finished);
+
+            let length = Object.keys(games[nbPlayersInGame][index_room]["players"]).length;
+            let finished = true;
+            for (let i=0; i<length; ++i){
+                if(games[nbPlayersInGame][index_room]["players"][i]){
+                    if(!games[nbPlayersInGame][index_room]["players"][i].finished){
+                        finished = false;
+                    }
+                }
+            }
+
+            if(finished){
+                // Game finished, players won !
+                endGame(nbPlayersInGame, index_room, null, "Game won ! Congratulation !", "Game won ! Congratulation !")
+            }
+
         }
     });
 
