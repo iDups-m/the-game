@@ -183,8 +183,6 @@ document.addEventListener("DOMContentLoaded", function() {
     endTurnBtn.innerHTML = "End Turn";
 
     sock.on("emptyDeck", function() {
-        alert("emptyDeck");
-
         let pick = document.getElementById("pick");
         pick.style.visibility = "hidden";
 
@@ -197,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("endGame", function(msg) {
-        alert(msg);
+        alert(msg + "\nGame will reload()...");
         location.reload();
     });
 });

@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 let MIN_CARD = 2;
 //let MAX_CARD = 99;
-let MAX_CARD = 70; //TODO: remove
+let MAX_CARD = 50; //TODO: remove
 
 /***************************************************************
                 handle client and the game
@@ -104,7 +104,7 @@ function sendPlayers(nbPlayers, index_room) {
 function startGame(nbPlayers, index_room) {
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
     let current = games[nbPlayers][index_room]["current"];
-    let name_beginner = Object.keys(games[nbPlayers][index_room]["players"][current]);
+    let name_beginner = (Object.keys(games[nbPlayers][index_room]["players"][current]))[0];
 
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
@@ -203,11 +203,29 @@ function warnEmptyDeck(nbPlayers, index_room) {
  */
 function nextCurrentPlayer(nbPlayers, index_room){
     let current = games[nbPlayers][index_room]["current"];
-    current = (current+1) % nbPlayers;
-    games[nbPlayers][index_room]["current"] = current;
+    //current = (current+1) % nbPlayers;
+    //games[nbPlayers][index_room]["current"] = current;
+    let index = -1;
+    let currentSet = false;
+    do {
+        current = (current+1) % nbPlayers;
+        if(!games[nbPlayers][index_room]["players"][current].finished){
+            currentSet = true;
+            games[nbPlayers][index_room]["current"] = current;
+        }
+        ++index;
+    } while((currentSet !== true) && (index < nbPlayers-1));
+
+
+    if(!currentSet){
+        // Game finished, players won !
+        endGame(nbPlayers, index_room, null, "Game won ! Congratulation !", "Game won ! Congratulation !")
+        return;
+    }
+
 
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
-    let name_beginner = Object.keys(games[nbPlayers][index_room]["players"][current]);
+    let name_beginner = (Object.keys(games[nbPlayers][index_room]["players"][current]))[0];
 
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
@@ -226,6 +244,28 @@ function nextCurrentPlayer(nbPlayers, index_room){
     }
 }
 
+
+/**
+ *  Player has stop the game, warn other players
+ *  @param nbPlayers the number of the players of the room
+ *  @param index_room the room to remove
+ *  @param name_player name of player you end game
+ *  @param msg_forYou message for you : lost / win ...
+ *  @param msg_forOther message for others : lost / win
+ */
+function endGame(nbPlayers, index_room, name_player, msg_forYou, msg_forOther) {
+    let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
+    for (let i=0; i<length; ++i){
+        if(games[nbPlayers][index_room]["players"][i]){
+            let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            if (name === name_player){
+                games[nbPlayers][index_room]["players"][i][name].emit("endGame", msg_forYou);
+            } else {
+                games[nbPlayers][index_room]["players"][i][name].emit("endGame", msg_forOther);
+            }
+        }
+    }
+}
 
 /**********************************************************************
  ***                              websocket                         ***
@@ -327,6 +367,7 @@ io.on('connection', function(socket) {
         name_player = name;
         games[nbPlayers][index_room]["players"][index_player] = {
             [name] : socket,
+            "finished" : false,
         };
 
         sendPlayers(nbPlayers, index_room);
@@ -383,10 +424,11 @@ io.on('connection', function(socket) {
         };
         games[nbPlayers][index_room]["players"][index_player] = {
             [name] : socket,
+            "finished" : false,
         };
 
         socket.emit("players", {
-            names : Object.keys(games[nbPlayers][index_room]["players"][0]),
+            names : Object.keys(games[nbPlayers][index_room]["players"][0])[0],
             nbPlayers : nbPlayersInGame,
             visibility : visibility,
         });
@@ -545,6 +587,7 @@ io.on('connection', function(socket) {
 
     /**
      * Client want to send a message (among those predefined so no verification necessary)
+     * @param msg the message
      */
     socket.on("sendMsg", function(msg) {
         let length = Object.keys(games[nbPlayersInGame][index_room]["players"]).length;
@@ -563,6 +606,25 @@ io.on('connection', function(socket) {
                     author : name_player,
                     message : msg,
                 });
+            }
+        }
+    });
+
+
+    /**
+     * Client has finished game
+     * @param surrender true il surrender of client or only call because empty hand
+     * @param nbCardsLeft number of remaining cards
+     */
+    socket.on("endGame", function(surrender, nbCardsLeft){
+        if(surrender){
+            console.log("Player " + name_player + " has surrender");
+            endGame(nbPlayersInGame, index_room, name_player, "Game lost, you have given up." , "A player of your team has given up.");
+        } else {
+            if(nbCardsLeft === 0){
+
+            } else {
+
             }
         }
     });
