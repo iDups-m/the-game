@@ -127,13 +127,12 @@ function getNbCards(nbPlayers) {
 
 function getNbCardsLeft() {
     let cards = document.getElementById("hand").children;
-    let res = cards.length;
+    let res = 0;
     for (let i = 0; i < cards.length; i++) {
-        if (cards[i].style.background === "white") {
-            res--;
+        if (cards[i].classList.contains("flip")) {
+            res++;
         }
     }
-    console.log(res);
     return res;
 }
 

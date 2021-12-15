@@ -85,8 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     surrenderBtn.addEventListener("click", function() {
-        let nbCardsLeft = getNbCardsLeft();
-        sock.emit("endGame", true, nbCardsLeft);
+        sock.emit("endGame", true);
     });
 
     sock.on("hand", function(arr) {
@@ -137,16 +136,16 @@ document.addEventListener("DOMContentLoaded", function() {
         refillHand(arr, nbCards);
     });
 
-    let cardsLeft;
-
     sock.on("updateGame", function(heaps) {
         updateStack(heaps);
-        cardsLeft = getNbCardsLeft();
-    });
 
-    if (cardsLeft === 0) {
-        sock.emit("endGame", false, 0);
-    }
+        let cardsLeft;
+        cardsLeft = getNbCardsLeft();
+
+        if (cardsLeft === 0) {
+            sock.emit("endGame", false);
+        }
+    });
 
     sock.on("nextCurrent", function(info) {
         displayMessage(info, false, true);
