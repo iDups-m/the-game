@@ -212,12 +212,23 @@ function updateStack(heaps) {
  */
 function refillHand(arr, nbHandCards) {
     let index = 0;
+    let nbCardsNeeded = 0;
     for (let i = 0; i < nbHandCards; i++) {
         let handCard = document.getElementById(i.toString());
         if (!handCard.classList.contains("flip")) {
-            handCard.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+arr[index]+".jpg')";
-            handCard.classList.add("flip");
-            index++;
+            nbCardsNeeded++;
+        }
+    }
+    for (let i = 0; i < nbHandCards; i++) {
+        let handCard = document.getElementById(i.toString());
+        if (!handCard.classList.contains("flip")) {
+            if (index < arr.length) {
+                handCard.lastElementChild.style.backgroundImage = "url('./pictures/cards/"+arr[index]+".jpg')";
+                handCard.classList.add("flip");
+                index++;
+            } else {
+                handCard.lastElementChild.style.background = "white";
+            }
         }
     }
 }
