@@ -153,11 +153,15 @@ document.addEventListener("DOMContentLoaded", function() {
         let pick = document.getElementById("pick");
         pick.style.visibility = "hidden";
 
+        let game = document.getElementById("game");
         let endTurnBtn = document.createElement("BUTTON");
         endTurnBtn.id = "endTurnBtn";
+        endTurnBtn.innerHTML = "End Turn";
+        game.appendChild(endTurnBtn);
 
         endTurnBtn.addEventListener("click", function() {
             sock.emit("endPlay");
+            sock.emit("getHand", 0);
         });
     });
 

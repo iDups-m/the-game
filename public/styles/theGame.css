@@ -81,6 +81,7 @@ button {
 }
 button:hover {
     background-color: red;
+    cursor: pointer;
 }
 
 #btnStart, #p_waiting, #load {
@@ -383,6 +384,6 @@ select {
 }
 #endTurnBtn {
     position: absolute;
-    top: 80%;
+    top: 50%;
     left: 10%;
 }
