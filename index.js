@@ -18,7 +18,7 @@ app.get('/', function(req, res) {
 
 let MIN_CARD = 2;
 //let MAX_CARD = 99;
-let MAX_CARD = 50; //TODO: remove
+let MAX_CARD = 70; //TODO: remove
 
 /***************************************************************
                 handle client and the game
