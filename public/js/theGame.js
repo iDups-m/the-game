@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     surrenderBtn.addEventListener("click", function() {
         let nbCardsLeft = getNbCardsLeft();
-        sock.emit("endGame", nbCardsLeft);
+        sock.emit("endGame", true, nbCardsLeft);
     });
 
     sock.on("hand", function(arr) {
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (cardsLeft === 0) {
-        sock.emit("endGame", 0);
+        sock.emit("endGame", false, 0);
     }
 
     sock.on("nextCurrent", function(info) {
@@ -200,20 +200,31 @@ document.addEventListener("DOMContentLoaded", function() {
         alert(msg);
         location.reload();
     });
-
-
 });
 
 document.addEventListener("keypress", function(e) {
     if (e.key === 'D' && e.shiftKey === true) {
+
+        let html = document.getElementsByTagName("HTML")[0];
         let chat = document.getElementsByTagName("ASIDE")[0];
-        let paragraphs = chat.getElementsByTagName("P");
+        let paragraphs = document.getElementsByTagName("P");
+        let h2 = document.getElementsByTagName("H2")[0];
+
         chat.classList.toggle("dark");
+
         if (chat.classList.contains("dark")) {
+            html.style.backgroundImage = "url('../pictures/wood_dark.jpg')";
+            if (h2) {
+                h2.style.color = "white";
+            }
             for (let i = 0; i < paragraphs.length; i++) {
                 paragraphs[i].style.color = "white";
             }
         } else {
+            html.style.backgroundImage = "url('../pictures/wood.jpg')";
+            if (h2) {
+                h2.style.color = "black";
+            }
             for (let i = 0; i < paragraphs.length; i++) {
                 paragraphs[i].style.color = "black";
             }
