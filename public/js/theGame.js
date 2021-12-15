@@ -173,7 +173,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         endTurnBtn.addEventListener("click", function() {
             sock.emit("endPlay");
-            sock.emit("getHand", 0);
         });
     });
 
