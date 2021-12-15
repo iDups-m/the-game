@@ -17,7 +17,8 @@ app.get('/', function(req, res) {
 });
 
 let MIN_CARD = 2;
-let MAX_CARD = 99;
+//let MAX_CARD = 99;
+let MAX_CARD = 50; //TODO: remove
 
 /***************************************************************
                 handle client and the game
@@ -133,7 +134,11 @@ function startGame(nbPlayers, index_room) {
  */
 function createDeck(nbPlayers, index_room) {
     for (let i = MIN_CARD; i < MAX_CARD; i++) {
-        games[nbPlayers][index_room]["deck"].push(i);
+        //TODO : supprimer, juste pour debug
+        if(i%2===0){
+            games[nbPlayers][index_room]["deck"].push(i);
+        }
+
     }
 
     /* Shuffle deck (even if card will be taken randomly) */
@@ -185,6 +190,7 @@ function warnEmptyDeck(nbPlayers, index_room) {
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
+            console.log("EmptyDeck sent to " + name);
             games[nbPlayers][index_room]["players"][i][name].emit("emptyDeck");
         }
     }
@@ -509,9 +515,8 @@ io.on('connection', function(socket) {
     /**
      * Client want to finish playing (set next current player)
      * Only call when empty deck
-     * @param nbCards number of cards wanted
      */
-    socket.on("endPlay", function(nbCards){
+    socket.on("endPlay", function(){
         // error : not connected player or game not started
         if (state === -1 || !games[nbPlayersInGame][index_room] || Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame || games[nbPlayersInGame][index_room]["deck"] == null) {
             socket.emit("error", "No game in progress.");
@@ -533,16 +538,6 @@ io.on('connection', function(socket) {
             return;
         }
 
-        // give cards
-        let cards = [];
-        for(let i=0; i<nbCards; ++i){
-            cards.push(getCard(nbPlayersInGame, index_room));
-            if(games[nbPlayersInGame][index_room]["deck"].length === 0){
-                warnEmptyDeck(nbPlayersInGame, index_room);
-                break;
-            }
-        }
-        socket.emit("newHand", cards);
         nbCardsPlayed = 0;
         nextCurrentPlayer(nbPlayersInGame, index_room); // change current player
     });

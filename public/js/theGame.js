@@ -160,6 +160,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("emptyDeck", function() {
+        alert("emptyDeck");
+
         let pick = document.getElementById("pick");
         pick.style.visibility = "hidden";
 
