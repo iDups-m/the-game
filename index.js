@@ -312,7 +312,7 @@ io.on('connection', function(socket) {
                 nbRooms[nbPlayers]++;
             } else {
                 index_room = roomFree;
-                index_player = names.length; //TODO: à vérifier en cas de suppression de joueur
+                index_player = names.length;
             }
         }
 
@@ -509,8 +509,9 @@ io.on('connection', function(socket) {
     /**
      * Client want to finish playing (set next current player)
      * Only call when empty deck
+     * @param nbCards number of cards wanted
      */
-    socket.on("endPlay", function(){
+    socket.on("endPlay", function(nbCards){
         // error : not connected player or game not started
         if (state === -1 || !games[nbPlayersInGame][index_room] || Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame || games[nbPlayersInGame][index_room]["deck"] == null) {
             socket.emit("error", "No game in progress.");
@@ -532,9 +533,18 @@ io.on('connection', function(socket) {
             return;
         }
 
-        // change current player
+        // give cards
+        let cards = [];
+        for(let i=0; i<nbCards; ++i){
+            cards.push(getCard(nbPlayersInGame, index_room));
+            if(games[nbPlayersInGame][index_room]["deck"].length === 0){
+                warnEmptyDeck(nbPlayersInGame, index_room);
+                break;
+            }
+        }
+        socket.emit("newHand", cards);
         nbCardsPlayed = 0;
-        nextCurrentPlayer(nbPlayersInGame, index_room);
+        nextCurrentPlayer(nbPlayersInGame, index_room); // change current player
     });
 
 
