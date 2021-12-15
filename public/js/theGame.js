@@ -137,12 +137,22 @@ document.addEventListener("DOMContentLoaded", function() {
     btnSend.addEventListener("click", function() {
         let message, heap;
 
+        let valid = true;
+
         message = document.getElementById("selectMessage").value;
         heap = document.getElementById("selectHeap").value;
+        if (message === "message") {
+            alert("Choose a message to display !");
+            valid = false;
+        } else if (heap === "heap") {
+            alert("Choose a number of heap !");
+            valid = false;
+        }
 
-        let msg = message+" number "+heap;
-
-        sock.emit("sendMsg", msg);
+        if (valid) {
+            let msg = message+" number "+heap;
+            sock.emit("sendMsg", msg);
+        }
     });
 
     sock.on("message", function(obj) {
