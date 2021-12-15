@@ -384,6 +384,13 @@ select {
 }
 #endTurnBtn {
     position: absolute;
+    top: 30%;
+    left: 10%;
+    margin-left: -20px;
+}
+#surrenderBtn {
+    position: absolute;
     top: 50%;
     left: 10%;
+    margin-left: -20px;
 }

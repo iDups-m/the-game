@@ -63,6 +63,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let nbCards;
 
+    let surrenderBtn = document.createElement("BUTTON");
+    surrenderBtn.id = "surrenderBtn";
+    surrenderBtn.innerHTML = "Surrender";
+
     sock.on("start", function (info) {
         hide_DOM("h1_welcome");
         hide_DOM("welcome");
@@ -72,9 +76,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
         initBoard(nbCards);
 
+        let game = document.getElementById("game");
+        game.appendChild(surrenderBtn);
+
         sock.emit("getHand", nbCards, true);
 
         displayMessage(info, true);
+    });
+
+    surrenderBtn.addEventListener("click", function() {
+        let nbCardsLeft = getNbCardsLeft();
+        sock.emit("endGame", nbCardsLeft);
     });
 
     sock.on("hand", function(arr) {
@@ -125,9 +137,16 @@ document.addEventListener("DOMContentLoaded", function() {
         refillHand(arr, nbCards);
     });
 
+    let cardsLeft;
+
     sock.on("updateGame", function(heaps) {
         updateStack(heaps);
+        cardsLeft = getNbCardsLeft();
     });
+
+    if (cardsLeft === 0) {
+        sock.emit("endGame", 0);
+    }
 
     sock.on("nextCurrent", function(info) {
         displayMessage(info, false, true);
@@ -159,6 +178,10 @@ document.addEventListener("DOMContentLoaded", function() {
         displayMessage(obj, false, false, 1);
     });
 
+    let endTurnBtn = document.createElement("BUTTON");
+    endTurnBtn.id = "endTurnBtn";
+    endTurnBtn.innerHTML = "End Turn";
+
     sock.on("emptyDeck", function() {
         alert("emptyDeck");
 
@@ -166,20 +189,19 @@ document.addEventListener("DOMContentLoaded", function() {
         pick.style.visibility = "hidden";
 
         let game = document.getElementById("game");
-        let endTurnBtn = document.createElement("BUTTON");
-        endTurnBtn.id = "endTurnBtn";
-        endTurnBtn.innerHTML = "End Turn";
         game.appendChild(endTurnBtn);
+    });
 
-        endTurnBtn.addEventListener("click", function() {
-            sock.emit("endPlay");
-        });
+    endTurnBtn.addEventListener("click", function() {
+        sock.emit("endPlay");
     });
 
     sock.on("endGame", function(msg) {
         alert(msg);
         location.reload();
     });
+
+
 });
 
 document.addEventListener("keypress", function(e) {

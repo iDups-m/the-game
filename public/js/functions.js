@@ -125,6 +125,18 @@ function getNbCards(nbPlayers) {
     return nbCards;
 }
 
+function getNbCardsLeft() {
+    let cards = document.getElementById("hand").children;
+    let res = cards.length;
+    for (let i = 0; i < cards.length; i++) {
+        if (cards[i].style.background === "white") {
+            res--;
+        }
+    }
+    console.log(res);
+    return res;
+}
+
 /**
  * return a card on the hand
  * @param card the card to flip
