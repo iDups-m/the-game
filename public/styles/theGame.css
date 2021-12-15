@@ -144,7 +144,7 @@ th, td {
 html {
     overflow-x: hidden;
     overflow-y: hidden;
-    background: url("../pictures/wood.jpg");
+    background: url("../pictures/wood.jpg"); /*TODO : pour le dark mode : wood_dark.jpg*/
 }
 * {
     box-sizing: border-box;
