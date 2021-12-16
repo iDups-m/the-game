@@ -388,7 +388,7 @@ io.on('connection', function(socket) {
         // if private room, verify that the name isn't already used
         if(visibility !== "PUBLIC"){
             for (let i = 0; i < nbRooms[nbPlayers]; ++i) {
-                if(games[nbPlayers][i]["visibility"] === visibility ){
+                if(games[nbPlayers][i]?.["visibility"] === visibility ){
                     socket.emit("error_create", "This name of room is already taken");
                     return;
                 }
