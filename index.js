@@ -17,8 +17,7 @@ app.get('/', function(req, res) {
 });
 
 let MIN_CARD = 2;
-//let MAX_CARD = 99;
-let MAX_CARD = 22; //TODO: remove
+let MAX_CARD = 99;
 
 /***************************************************************
                 handle client and the game
@@ -45,14 +44,14 @@ let nbRooms = {
  */
 function removeRoom(nbPlayers, index_room) {
     console.log("removeRoom receive with " + nbPlayers + " and " + index_room);
-    if((games[nbPlayers][index_room] === undefined) || (games[nbPlayers][index_room]["players"] === undefined)){
+    if(!games[nbPlayers]?.[index_room]?.["players"]){
         return;
     }
 
     console.log("Remove the room " + index_room + " of " + nbPlayers + " players");
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
     for (let i=0; i<length; ++i){
-        if(games[nbPlayers][index_room]["players"][i]){
+        if(games[nbPlayers]?.[index_room]?.["players"]?.[i]){
             let name = Object.keys(games[nbPlayers][index_room]["players"][i])[0];
             games[nbPlayers][index_room]["players"][i][name].emit("endGame", "Game lost, one player has left");
         }

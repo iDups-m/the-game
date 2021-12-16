@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sock.on("endGame", function(msg) {
-        alert(msg + "\nGame will reload()...");
+        alert(msg + "\nGame will reload...");
         location.reload();
     });
 });
