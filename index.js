@@ -44,8 +44,12 @@ let nbRooms = {
  *  @param index_room the room to remove
  */
 function removeRoom(nbPlayers, index_room) {
-    console.log("Remove the room " + index_room + " of " + nbPlayers + " players");
+    console.log("removeRoom receive with " + nbPlayers + " and " + index_room);
+    if((games[nbPlayers][index_room] === undefined) || (games[nbPlayers][index_room]["players"] === undefined)){
+        return;
+    }
 
+    console.log("Remove the room " + index_room + " of " + nbPlayers + " players");
     let length = Object.keys(games[nbPlayers][index_room]["players"]).length;
     for (let i=0; i<length; ++i){
         if(games[nbPlayers][index_room]["players"][i]){
@@ -602,22 +606,14 @@ io.on('connection', function(socket) {
 
     /**
      * Client has finished game
-     * @param surrender true il surrender of client or only call because empty hand
-     * @param nbCardsLeft number of remaining cards
+     * @param surrender true if client want to given up, false if empty hand
      */
-    socket.on("endGame", function(surrender, nbCardsLeft){
-        console.log("endgame received with " + surrender + " et " + nbCardsLeft);
-
+    socket.on("endGame", function(surrender){
         if(surrender){
             console.log("Player " + name_player + " has surrender");
             endGame(nbPlayersInGame, index_room, name_player, "Game lost, you have given up." , "A player of your team has given up.");
         } else {
-            if(nbCardsLeft === 0){
-                games[nbPlayersInGame][index_room]["players"][index_player].finished = true;
-            }
-
-            console.log("games[nbPlayersInGame][index_room][\"players\"][index_player].finished=" + games[nbPlayersInGame][index_room]["players"][index_player].finished);
-
+            games[nbPlayersInGame][index_room]["players"][index_player].finished = true;
             let length = Object.keys(games[nbPlayersInGame][index_room]["players"]).length;
             let finished = true;
             for (let i=0; i<length; ++i){
