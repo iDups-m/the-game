@@ -55,6 +55,7 @@ function addPlayer(name){
  * @param players object with an array of name of players, the number of players and the visibility of the room
  */
 function refreshTablePlayers(players) {
+    console.log(players);
     document.getElementById("tblPlayers").textContent = ''; //to remove every children
     prepareTablePlayersDom();
     for (const player in players.names) {

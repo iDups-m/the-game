@@ -182,6 +182,7 @@ document.addEventListener("DOMContentLoaded", function() {
     endTurnBtn.innerHTML = "End Turn";
 
     sock.on("emptyDeck", function() {
+        alert("Empty deck.");
         let pick = document.getElementById("pick");
         pick.style.visibility = "hidden";
 

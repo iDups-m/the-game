@@ -419,11 +419,7 @@ io.on('connection', function(socket) {
             "finished" : false,
         };
 
-        socket.emit("players", {
-            names : Object.keys(games[nbPlayers][index_room]["players"][0])[0],
-            nbPlayers : nbPlayersInGame,
-            visibility : visibility,
-        });
+        sendPlayers(nbPlayers, index_room);
 
     });
 
