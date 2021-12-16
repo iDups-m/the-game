@@ -641,7 +641,7 @@ io.on('connection', function(socket) {
         if(state !== -1) {
             console.log("Player " + name_player + " logged out");
 
-            if(games[nbPlayersInGame][index_room]) {
+            if((games[nbPlayersInGame][index_room]) && (games[nbPlayersInGame][index_room]["players"])) {
                 if (Object.keys(games[nbPlayersInGame][index_room]["players"]).length != nbPlayersInGame) {
                     // room not already playing
                     removePlayer(nbPlayersInGame, index_room, index_player);
